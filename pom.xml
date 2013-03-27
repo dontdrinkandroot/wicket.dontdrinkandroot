@@ -28,7 +28,7 @@
 	
 	<properties>
 		<net.dontdrinkandroot.utils.progressmonitor.version>0.1.0</net.dontdrinkandroot.utils.progressmonitor.version>
-		<net.dontdrinkandroot.wicket.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.wicket.version>
+		<net.dontdrinkandroot.wicket.version>0.3.0</net.dontdrinkandroot.wicket.version>
 	</properties>
 	
 	<dependencies>
