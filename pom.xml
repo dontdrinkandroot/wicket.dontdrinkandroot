@@ -31,6 +31,43 @@
 		<net.dontdrinkandroot.wicket.version>0.3.0</net.dontdrinkandroot.wicket.version>
 	</properties>
 	
+	<build>
+		<!-- Make sure HTML files are also copied from main/java -->
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+	
+	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>net.dontdrinkandroot</groupId>
