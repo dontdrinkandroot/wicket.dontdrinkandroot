@@ -12,7 +12,12 @@ public class DontdrinkandrootBootstrapJsHeaderItem extends JavaScriptUrlReferenc
 
 	public DontdrinkandrootBootstrapJsHeaderItem(boolean defer) {
 
-		super("http://design.dontdrinkandroot.net/js/bootstrap/bootstrap-2.3.min.js", "bootstrap.js", defer, null, null);
+		super(
+				"http://design.dontdrinkandroot.net/js/bootstrap/bootstrap-3.0.0.min.js",
+				"bootstrap.js",
+				defer,
+				null,
+				null);
 	}
 
 
