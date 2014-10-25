@@ -8,13 +8,13 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
 
 
-public class DontdrinkandrootBootstrap31JsHeaderItem extends JavaScriptUrlReferenceHeaderItem
+public class DontdrinkandrootBootstrap32JsHeaderItem extends JavaScriptUrlReferenceHeaderItem
 {
 
-	public DontdrinkandrootBootstrap31JsHeaderItem(boolean defer)
+	public DontdrinkandrootBootstrap32JsHeaderItem(boolean defer)
 	{
 		super(
-				"http://static.dontdrinkandroot.net/bootstrap/3.1/bootstrap.min.js",
+				"http://static.dontdrinkandroot.net/bootstrap/3.2/bootstrap.min.js",
 				"bootstrap-3.1.js",
 				defer,
 				null,
