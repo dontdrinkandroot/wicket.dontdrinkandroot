@@ -6,12 +6,12 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>wicket.dontdrinkandroot</artifactId>
-	<version>0.4.5-SNAPSHOT</version>
+	<version>0.5.0-SNAPSHOT</version>
 	
 	<developers>
 		<developer>
 			<name>Philip Washington Sorst</name>
-			<url>http://sorst.net</url>
+			<url>https://sorst.net</url>
 		</developer>
 	</developers>
 	
@@ -27,8 +27,8 @@
 	</scm>
 	
 	<properties>
-		<net.dontdrinkandroot.utils.progressmonitor.version>0.1.0</net.dontdrinkandroot.utils.progressmonitor.version>
-		<net.dontdrinkandroot.wicket.version>0.4.4</net.dontdrinkandroot.wicket.version>
+		<version.net.dontdrinkandroot.utils.progressmonitor>0.1.0</version.net.dontdrinkandroot.utils.progressmonitor>
+		<version.net.dontdrinkandroot.wicket>0.5.0-SNAPSHOT</version.net.dontdrinkandroot.wicket>
 	</properties>
 	
 	<build>
@@ -72,19 +72,19 @@
 		<dependency>
 			<groupId>net.dontdrinkandroot</groupId>
 			<artifactId>utils.progressmonitor</artifactId>
-			<version>${net.dontdrinkandroot.utils.progressmonitor.version}</version>
+			<version>${version.net.dontdrinkandroot.utils.progressmonitor}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.dontdrinkandroot</groupId>
 			<artifactId>wicket.bootstrap</artifactId>
-			<version>${net.dontdrinkandroot.wicket.version}</version>
+			<version>${version.net.dontdrinkandroot.wicket}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.dontdrinkandroot</groupId>
 			<artifactId>wicket.experimental</artifactId>
-			<version>${net.dontdrinkandroot.wicket.version}</version>
+			<version>${version.net.dontdrinkandroot.wicket}</version>
 		</dependency>
 	</dependencies>
 </project>

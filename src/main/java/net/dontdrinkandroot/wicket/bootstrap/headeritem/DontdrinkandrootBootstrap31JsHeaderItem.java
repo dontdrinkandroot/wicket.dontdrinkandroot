@@ -1,6 +1,7 @@
 package net.dontdrinkandroot.wicket.bootstrap.headeritem;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.wicket.ajax.WicketEventJQueryResourceReference;
 import org.apache.wicket.markup.head.HeaderItem;
@@ -21,11 +22,10 @@ public class DontdrinkandrootBootstrap31JsHeaderItem extends JavaScriptUrlRefere
 				null);
 	}
 
-
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies()
+	public List<HeaderItem> getDependencies()
 	{
-		HeaderItem jQuery = JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get());
+		final HeaderItem jQuery = JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get());
 
 		return Collections.singletonList(jQuery);
 	}
