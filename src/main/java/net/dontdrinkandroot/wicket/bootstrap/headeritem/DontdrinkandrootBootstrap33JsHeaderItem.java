@@ -9,14 +9,14 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
 
 
-public class DontdrinkandrootBootstrap32JsHeaderItem extends JavaScriptUrlReferenceHeaderItem
+public class DontdrinkandrootBootstrap33JsHeaderItem extends JavaScriptUrlReferenceHeaderItem
 {
 
-	public DontdrinkandrootBootstrap32JsHeaderItem(boolean defer)
+	public DontdrinkandrootBootstrap33JsHeaderItem(boolean defer)
 	{
 		super(
-				"http://static.dontdrinkandroot.net/bootstrap/3.2/bootstrap.min.js",
-				"bootstrap-3.2.js",
+				"http://static.dontdrinkandroot.net/bootstrap/3.3/bootstrap.min.js",
+				"bootstrap-3.3.js",
 				defer,
 				null,
 				null);
