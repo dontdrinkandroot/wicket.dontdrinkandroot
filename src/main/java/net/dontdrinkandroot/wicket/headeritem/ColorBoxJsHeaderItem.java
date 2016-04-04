@@ -1,12 +1,13 @@
 package net.dontdrinkandroot.wicket.headeritem;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.wicket.ajax.WicketEventJQueryResourceReference;
+import org.apache.wicket.Application;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
+import org.apache.wicket.request.resource.ResourceReference;
 
 
 public class ColorBoxJsHeaderItem extends JavaScriptUrlReferenceHeaderItem
@@ -26,8 +27,8 @@ public class ColorBoxJsHeaderItem extends JavaScriptUrlReferenceHeaderItem
 	@Override
 	public List<HeaderItem> getDependencies()
 	{
-		final HeaderItem jQuery = JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get());
-
-		return Collections.singletonList(jQuery);
+		ResourceReference jQueryReference = Application.get().getJavaScriptLibrarySettings().getJQueryReference();
+		HeaderItem jQueryHeaderItem = JavaScriptHeaderItem.forReference(jQueryReference);
+		return Arrays.asList(jQueryHeaderItem);
 	}
 }
