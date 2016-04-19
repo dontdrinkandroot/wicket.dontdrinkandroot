@@ -90,11 +90,5 @@
 			<version>${version.net.dontdrinkandroot.wicket}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>net.dontdrinkandroot</groupId>
-			<artifactId>wicket.experimental</artifactId>
-			<version>${version.net.dontdrinkandroot.wicket}</version>
-		</dependency>
-
 	</dependencies>
 </project>
