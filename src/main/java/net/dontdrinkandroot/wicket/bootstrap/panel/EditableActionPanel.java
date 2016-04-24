@@ -60,7 +60,7 @@ abstract public class EditableActionPanel<T> extends PlainActionPanel<T>
 
 		};
 		this.editLink.add(new ButtonBehavior());
-		this.editLink.add(new IconBehavior(new FontAwesomeIcon(FontAwesomeIconClass.PENCIL)));
+		this.editLink.add(new IconBehavior(new FontAwesomeIcon(FontAwesomeIconClass.PENCIL).setFixedWidth(true)));
 		actionView.add(this.editLink);
 	}
 
