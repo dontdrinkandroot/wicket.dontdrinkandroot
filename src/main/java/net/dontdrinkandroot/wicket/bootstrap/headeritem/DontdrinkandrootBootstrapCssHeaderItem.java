@@ -8,7 +8,7 @@ public class DontdrinkandrootBootstrapCssHeaderItem extends CssUrlReferenceHeade
 
 	public DontdrinkandrootBootstrapCssHeaderItem()
 	{
-		super("http://static.dontdrinkandroot.net/design/1.0/style.css", "screen", null);
+		super("https://static.dontdrinkandroot.net/design/1.0/style.css", "screen", null);
 	}
 
 }

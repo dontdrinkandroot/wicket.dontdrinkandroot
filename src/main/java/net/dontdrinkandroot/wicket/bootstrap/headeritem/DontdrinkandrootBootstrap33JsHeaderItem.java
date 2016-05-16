@@ -16,7 +16,7 @@ public class DontdrinkandrootBootstrap33JsHeaderItem extends JavaScriptUrlRefere
 	public DontdrinkandrootBootstrap33JsHeaderItem(boolean defer)
 	{
 		super(
-				"http://static.dontdrinkandroot.net/bootstrap/3.3/bootstrap.min.js",
+				"https://static.dontdrinkandroot.net/bootstrap/3.3/bootstrap.min.js",
 				"bootstrap-3.3.js",
 				defer,
 				null,
