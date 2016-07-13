@@ -1,7 +1,7 @@
 package net.dontdrinkandroot.wicket.bootstrap.component.progress;
 
 import net.dontdrinkandroot.utils.progressmonitor.ProgressStatus;
-import net.dontdrinkandroot.wicket.bootstrap.css.ProgressBarClass;
+import net.dontdrinkandroot.wicket.bootstrap.css.ProgressBarStyle;
 import net.dontdrinkandroot.wicket.model.progress.ProgressStatusMessageModel;
 import net.dontdrinkandroot.wicket.model.progress.ProgressStatusPercentModel;
 
@@ -48,13 +48,13 @@ public class ProgressStatusProgressBar extends GenericPanel<ProgressStatus> {
 	}
 
 
-	public ProgressBarClass getBarStyle() {
+	public ProgressBarStyle getBarStyle() {
 
 		return this.bar.getBarStyle();
 	}
 
 
-	public void setBarStyle(ProgressBarClass barStyle) {
+	public void setBarStyle(ProgressBarStyle barStyle) {
 
 		this.bar.setBarStyle(barStyle);
 	}
