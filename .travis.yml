@@ -1,7 +1,7 @@
 language: java
 
 jdk:
-  - openjdk8
+  - oraclejdk8
 
 env:
   global:
@@ -9,4 +9,4 @@ env:
   - secure: r2wf/KIZhyLmflhBr2UVrFt2z29J21aX3kL5+Iw/ClLQn2HXf4Q3UKhfw9YQTMkvgusXtBkfo7eKN9C7d+ndtdsf4ccqtUuT0piRTHx0+Y75Td10ntSE6qasN2dL3adFWcTFLdnFPBv+7CdlxeK2XUloJK8rxFvFteKXLHVgfpk=
   
 after_success:
-  - "[ $TRAVIS_JDK_VERSION == \"openjdk8\" ] && { mvn clean deploy --settings travis-maven-settings.xml; };"
+  - "[ $TRAVIS_JDK_VERSION == \"oraclejdk8\" ] && { mvn clean deploy --settings travis-maven-settings.xml; };"
