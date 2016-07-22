@@ -11,14 +11,14 @@ import net.dontdrinkandroot.wicket.component.basic.Heading.Level;
 public class SimpleActionPanel<T> extends SimplePanel<T>
 {
 
-	protected IModel<String> headingModel;
-
-	protected Level headingLevel;
-
-
 	public SimpleActionPanel(String id, IModel<T> model)
 	{
 		super(id, model);
+	}
+
+	public SimpleActionPanel(String id, IModel<T> model, IModel<String> headingModel)
+	{
+		super(id, model, headingModel);
 	}
 
 	public SimpleActionPanel(String id, IModel<String> headingModel, Level headingLevel)

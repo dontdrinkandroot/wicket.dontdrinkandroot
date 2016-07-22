@@ -1,5 +1,6 @@
 package net.dontdrinkandroot.wicket.bootstrap.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -31,9 +32,8 @@ public class ActionPanelHeading extends GenericPanel<Void>
 	{
 		super.onInitialize();
 
-		Heading heading = new Heading("title", this.headingModel, this.headingLevel);
-		heading.add(new CssClassAppender(BootstrapCssClass.PANEL_TITLE));
-		this.add(heading);
+		Component title = this.createTitle("title");
+		this.add(title);
 
 		WebMarkupContainer actions = new WebMarkupContainer("actions");
 		this.add(actions);
@@ -41,6 +41,13 @@ public class ActionPanelHeading extends GenericPanel<Void>
 		RepeatingView actionView = new RepeatingView("action");
 		this.populateActionView(actionView);
 		actions.add(actionView);
+	}
+
+	protected Component createTitle(String id)
+	{
+		Heading heading = new Heading(id, this.headingModel, this.headingLevel);
+		heading.add(new CssClassAppender(BootstrapCssClass.PANEL_TITLE));
+		return heading;
 	}
 
 	protected void populateActionView(RepeatingView actionView)
