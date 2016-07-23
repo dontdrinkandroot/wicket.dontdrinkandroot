@@ -31,6 +31,7 @@
 		<version.net.dontdrinkandroot.utils.progressmonitor>0.1.0</version.net.dontdrinkandroot.utils.progressmonitor>
 		<version.net.dontdrinkandroot.wicket>0.5.0-SNAPSHOT</version.net.dontdrinkandroot.wicket>
 		<version.net.dontdrinkandroot.utils>0.3.0-SNAPSHOT</version.net.dontdrinkandroot.utils>
+		<version.org.apache.wicket>7.3.0</version.org.apache.wicket>
 	</properties>
 
 	<build>
@@ -82,6 +83,12 @@
 			<groupId>net.dontdrinkandroot</groupId>
 			<artifactId>utils.progressmonitor</artifactId>
 			<version>${version.net.dontdrinkandroot.utils.progressmonitor}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<version>${version.org.apache.wicket}</version>
 		</dependency>
 
 		<dependency>
