@@ -47,6 +47,7 @@ public class ActionPanelHeading extends GenericPanel<Void>
 	{
 		Heading heading = new Heading(id, this.headingModel, this.headingLevel);
 		heading.add(new CssClassAppender(BootstrapCssClass.PANEL_TITLE));
+
 		return heading;
 	}
 
