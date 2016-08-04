@@ -67,7 +67,7 @@ public abstract class SortableBehavior extends AbstractDefaultAjaxBehavior
 			/* The dropped component is one of our list items */
 			if (out) {
 				/* Item was dragged outside of the list, remove it */
-				this.onRemove(target, oldPosition);
+				this.onRemove(target, oldPosition, newPosition);
 			} else {
 				/* Item was dragged within the list, update position */
 				this.onPositionChanged(target, oldPosition, newPosition);
@@ -152,7 +152,7 @@ public abstract class SortableBehavior extends AbstractDefaultAjaxBehavior
 
 	protected abstract void onPositionChanged(AjaxRequestTarget target, int oldPosition, int newPosition);
 
-	protected abstract void onRemove(AjaxRequestTarget target, int position);
+	protected abstract void onRemove(AjaxRequestTarget target, int position, int newPosition);
 
 	protected abstract void onInsert(AjaxRequestTarget target, Object droppedModelObject, int position);
 }
