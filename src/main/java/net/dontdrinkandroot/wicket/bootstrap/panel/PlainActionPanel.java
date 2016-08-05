@@ -16,6 +16,11 @@ public class PlainActionPanel<T> extends PlainPanel<T>
 	protected Level headingLevel;
 
 
+	public PlainActionPanel(String id)
+	{
+		super(id);
+	}
+
 	public PlainActionPanel(String id, IModel<T> model)
 	{
 		super(id, model);
