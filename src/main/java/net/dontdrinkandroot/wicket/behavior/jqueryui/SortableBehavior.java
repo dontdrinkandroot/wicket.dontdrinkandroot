@@ -116,19 +116,22 @@ public abstract class SortableBehavior extends AbstractDefaultAjaxBehavior
 			@Override
 			public List<HeaderItem> getDependencies()
 			{
-				return Collections.singletonList((HeaderItem) new ExternalJQueryUiJsHeaderItem(false));
+				return Collections.singletonList(SortableBehavior.this.getJQueryUiHeaderItem());
 			}
 		};
 
+		String handle = this.getHandle();
+		handle = handle == null ? "false" : "'" + handle + "'";
 		final OnDomReadyHeaderItem initHeaderItem = new OnDomReadyHeaderItem(
 				String.format(
-						"initSortable('%s', %s, '%s', '%s', '%s', '%s')",
+						"initSortable('%s', %s, '%s', '%s', '%s', '%s', %s)",
 						component.getMarkupId(),
 						callbackFunction,
 						component.getPageRelativePath(),
 						this.itemSelector,
 						this.getPlaceHolderClass(),
-						containment)) {
+						containment,
+						handle)) {
 
 			@Override
 			public List<HeaderItem> getDependencies()
@@ -138,6 +141,16 @@ public abstract class SortableBehavior extends AbstractDefaultAjaxBehavior
 		};
 
 		response.render(initHeaderItem);
+	}
+
+	protected HeaderItem getJQueryUiHeaderItem()
+	{
+		return new ExternalJQueryUiJsHeaderItem(false);
+	}
+
+	protected String getHandle()
+	{
+		return null;
 	}
 
 	protected String getPlaceHolderClass()

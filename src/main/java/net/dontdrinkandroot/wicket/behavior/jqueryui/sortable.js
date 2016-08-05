@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function initSortable(markupId, wicketCallback, componentPath, itemSelector, placeholderClass, containment) {
+function initSortable(markupId, wicketCallback, componentPath, itemSelector, placeholderClass, containment, handle) {
 	
 	var selector = "#" + markupId + "";
 	$(selector).sortable({
@@ -42,6 +42,8 @@ function initSortable(markupId, wicketCallback, componentPath, itemSelector, pla
 		},
 		
 		placeholder: placeholderClass,
+		
+		handle: handle,
 		
 		helper: function(event, ui) {
 			ui.data('wicket.component.path', componentPath);
