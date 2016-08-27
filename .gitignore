@@ -2,4 +2,4 @@
 .classpath
 .settings
 target
-/src/main/resources/bower/
+/src/main/resources/net/dontdrinkandroot/wicket/bower/
