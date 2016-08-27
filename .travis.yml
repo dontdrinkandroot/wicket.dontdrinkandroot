@@ -3,10 +3,17 @@ language: java
 jdk:
   - oraclejdk8
 
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
 env:
   global:
   - NEXUS_USERNAME=travis
   - secure: r2wf/KIZhyLmflhBr2UVrFt2z29J21aX3kL5+Iw/ClLQn2HXf4Q3UKhfw9YQTMkvgusXtBkfo7eKN9C7d+ndtdsf4ccqtUuT0piRTHx0+Y75Td10ntSE6qasN2dL3adFWcTFLdnFPBv+7CdlxeK2XUloJK8rxFvFteKXLHVgfpk=
-  
+
+before_script:
+  - npm install -g bower
+
 after_success:
   - "[ $TRAVIS_JDK_VERSION == \"oraclejdk8\" ] && { mvn clean deploy --settings travis-maven-settings.xml; };"
