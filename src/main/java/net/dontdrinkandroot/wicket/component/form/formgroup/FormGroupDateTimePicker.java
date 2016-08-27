@@ -23,8 +23,43 @@ import net.dontdrinkandroot.wicket.bower.BootstrapDatetimepickerJsHeaderItem;
 import net.dontdrinkandroot.wicket.model.SimpleDateFormatModel;
 
 
+// TODO: Add output format localization
 public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, HiddenField<Date>>
 {
+
+	public enum Precision
+	{
+		YEAR("YYYY", "yyyy"),
+		MONTH("YYYYMM", "yyyyMM"),
+		DAY("YYYYMMDD", "yyyyMMdd"),
+		HOUR("YYYYMMDDHH", "yyyyMMddHH"),
+		MINUTE("YYYYMMDDHHmm", "yyyyMMddHHmm"),
+		SECOND("YYYYMMDDHHmmss", "yyyyMMddHHmmss");
+
+		private String momentFormat;
+
+		private String converterFormat;
+
+
+		private Precision(String momentFormat, String converterFormat)
+		{
+			this.momentFormat = momentFormat;
+			this.converterFormat = converterFormat;
+		}
+
+		public String getConverterFormat()
+		{
+			return this.converterFormat;
+		}
+
+		public String getMomentFormat()
+		{
+			return this.momentFormat;
+		}
+	}
+
+
+	private Precision precision = Precision.SECOND;
 
 	private Label dateLabel;
 
@@ -34,14 +69,57 @@ public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, 
 		super(id, labelModel, model);
 	}
 
+	public FormGroupDateTimePicker(String id, IModel<String> labelModel, IModel<Date> model, Precision precision)
+	{
+		super(id, labelModel, model);
+		this.precision = precision;
+	}
+
 	@Override
 	protected void createComponents()
 	{
 		super.createComponents();
 		this.dateLabel = new Label(
 				"dateLabel",
-				new SimpleDateFormatModel(this.getModel(), "EEE, d. MMMM yyyy, HH:mm", this.getLocale()));
+				new SimpleDateFormatModel(this.getModel(), this.getOutputFormatPattern(), this.getLocale()));
 		this.dateLabel.setOutputMarkupId(true);
+	}
+
+	protected String getOutputFormatPattern()
+	{
+		if (this.getLocale().getLanguage().equals(Locale.GERMAN)) {
+			switch (this.precision) {
+				case YEAR:
+					return "yyyy";
+				case MONTH:
+					return "MMMM yyyy";
+				case DAY:
+					return "EEE, d. MMMM yyyy";
+				case HOUR:
+					return "EEE, d. MMMM yyyy, HH";
+				case MINUTE:
+					return "EEE, d. MMMM yyyy, HH:mm";
+				case SECOND:
+					return "EEE, d. MMMM yyyy, HH:mm:ss";
+			}
+		}
+
+		switch (this.precision) {
+			case YEAR:
+				return "yyyy";
+			case MONTH:
+				return "yyyy-MM";
+			case DAY:
+				return "yyyy-MM-dd";
+			case HOUR:
+				return "yyyy-MM-dd HH";
+			case MINUTE:
+				return "yyyy-MM-dd HH:mm";
+			case SECOND:
+				return "yyyy-MM-dd HH:mm:ss";
+		}
+
+		return this.precision.getConverterFormat();
 	}
 
 	@Override
@@ -79,7 +157,7 @@ public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, 
 						@Override
 						public DateFormat getDateFormat(Locale locale)
 						{
-							return new SimpleDateFormat("yyyyMMddHHmm");
+							return new SimpleDateFormat(FormGroupDateTimePicker.this.precision.getConverterFormat());
 						};
 					};
 				} else {
@@ -97,6 +175,12 @@ public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, 
 		response.render(new BootstrapDatetimepickerCssHeaderItem());
 		response.render(
 				JavaScriptHeaderItem.forReference(new PackageResourceReference(this.getClass(), "datetimepicker.js")));
-		response.render(new OnLoadHeaderItem(String.format("initDateTimePicker('%s')", this.getMarkupId())));
+		response.render(
+				new OnLoadHeaderItem(
+						String.format(
+								"initDateTimePicker('%s', '%s', '%s')",
+								this.getMarkupId(),
+								this.precision.getMomentFormat(),
+								this.getLocale().getLanguage())));
 	};
 }
