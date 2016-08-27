@@ -1,0 +1,9 @@
+{
+  "name": "net.dontdrinkandroot.wicket",
+  "version": "0.1.0",
+  "public": false,
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
