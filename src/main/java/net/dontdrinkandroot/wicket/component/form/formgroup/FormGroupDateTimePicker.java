@@ -1,10 +1,9 @@
 package net.dontdrinkandroot.wicket.component.form.formgroup;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
+import net.dontdrinkandroot.wicket.bootstrap.component.form.formgroup.FormGroupFormComponent;
+import net.dontdrinkandroot.wicket.bower.BootstrapDatetimepickerCssHeaderItem;
+import net.dontdrinkandroot.wicket.bower.BootstrapDatetimepickerJsHeaderItem;
+import net.dontdrinkandroot.wicket.model.SimpleDateFormatModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -17,10 +16,10 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.DateConverter;
 
-import net.dontdrinkandroot.wicket.bootstrap.component.form.formgroup.FormGroupFormComponent;
-import net.dontdrinkandroot.wicket.bower.BootstrapDatetimepickerCssHeaderItem;
-import net.dontdrinkandroot.wicket.bower.BootstrapDatetimepickerJsHeaderItem;
-import net.dontdrinkandroot.wicket.model.SimpleDateFormatModel;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 // TODO: Add output format localization
@@ -87,7 +86,7 @@ public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, 
 
 	protected String getOutputFormatPattern()
 	{
-		if (this.getLocale().getLanguage().equals(Locale.GERMAN)) {
+		if (this.getLocale().getLanguage().equals(Locale.GERMAN.getLanguage())) {
 			switch (this.precision) {
 				case YEAR:
 					return "yyyy";
@@ -101,6 +100,23 @@ public class FormGroupDateTimePicker extends FormGroupFormComponent<Date, Date, 
 					return "EEE, d. MMMM yyyy, HH:mm";
 				case SECOND:
 					return "EEE, d. MMMM yyyy, HH:mm:ss";
+			}
+		}
+
+		if (this.getLocale().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+			switch (this.precision) {
+				case YEAR:
+					return "yyyy";
+				case MONTH:
+					return "MMMM yyyy";
+				case DAY:
+					return "EEE, MMMM d, yyyy";
+				case HOUR:
+					return "EEE, MMMM d, yyyy, HH";
+				case MINUTE:
+					return "EEE, MMMM d, yyyy, HH:mm";
+				case SECOND:
+					return "EEE, MMMM d, yyyy, HH:mm:ss";
 			}
 		}
 
