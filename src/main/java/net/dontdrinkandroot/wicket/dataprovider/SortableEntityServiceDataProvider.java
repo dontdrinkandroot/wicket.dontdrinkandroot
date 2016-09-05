@@ -2,20 +2,23 @@ package net.dontdrinkandroot.wicket.dataprovider;
 
 import net.dontdrinkandroot.persistence.entity.Entity;
 import net.dontdrinkandroot.persistence.service.EntityService;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
+import javax.persistence.metamodel.SingularAttribute;
 import java.util.Iterator;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataProvider<T>
+public class SortableEntityServiceDataProvider<T extends Entity<K>, K> extends SortableDataProvider<T, SingularAttribute<T, ?>>
 {
 	private final EntityService<T, K> service;
 
-	public EntityServiceDataProvider(EntityService<T, K> service)
+	public SortableEntityServiceDataProvider(EntityService<T, K> service)
 	{
 		this.service = service;
 	}
@@ -23,6 +26,13 @@ public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataP
 	@Override
 	public Iterator<? extends T> iterator(long first, long count)
 	{
+		SortParam<SingularAttribute<T, ?>> sort = this.getSort();
+		if (null != sort) {
+			SingularAttribute<T, ?> sortAttribute = sort.getProperty();
+			ISortState<SingularAttribute<T, ?>> sortState = this.getSortState();
+			return this.service.listAll(first, count, sortAttribute, sort.isAscending()).iterator();
+		}
+
 		return this.service.listAll(first, count).iterator();
 	}
 
@@ -42,7 +52,7 @@ public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataP
 			@Override
 			protected T load()
 			{
-				return EntityServiceDataProvider.this.service.find(this.id);
+				return SortableEntityServiceDataProvider.this.service.find(this.id);
 			}
 		};
 	}
