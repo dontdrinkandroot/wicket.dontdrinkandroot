@@ -17,9 +17,7 @@
  */
 package net.dontdrinkandroot.wicket.behavior.jqueryui;
 
-import java.util.Collections;
-import java.util.List;
-
+import net.dontdrinkandroot.wicket.headeritem.ExternalJQueryUiJsHeaderItem;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -31,141 +29,145 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.string.StringValue;
 
-import net.dontdrinkandroot.wicket.headeritem.ExternalJQueryUiJsHeaderItem;
+import java.util.Collections;
+import java.util.List;
 
 
 public abstract class SortableBehavior extends AbstractDefaultAjaxBehavior
 {
 
-	private final String itemSelector;
+    private final String itemSelector;
 
+    public SortableBehavior(String itemSelector)
+    {
+        this.itemSelector = itemSelector;
+    }
 
-	public SortableBehavior(String itemSelector)
-	{
-		this.itemSelector = itemSelector;
-	}
+    @Override
+    protected void respond(AjaxRequestTarget target)
+    {
+        final StringValue oldPositionValue =
+                this.getComponent().getRequest().getQueryParameters().getParameterValue("oldPosition");
+        final StringValue newPositionValue =
+                this.getComponent().getRequest().getQueryParameters().getParameterValue("newPosition");
+        final StringValue outValue = this.getComponent().getRequest().getQueryParameters().getParameterValue("out");
+        final StringValue componentPathValue =
+                this.getComponent().getRequest().getQueryParameters().getParameterValue("componentPath");
 
-	@Override
-	protected void respond(AjaxRequestTarget target)
-	{
-		final StringValue oldPositionValue =
-				this.getComponent().getRequest().getQueryParameters().getParameterValue("oldPosition");
-		final StringValue newPositionValue =
-				this.getComponent().getRequest().getQueryParameters().getParameterValue("newPosition");
-		final StringValue outValue = this.getComponent().getRequest().getQueryParameters().getParameterValue("out");
-		final StringValue componentPathValue =
-				this.getComponent().getRequest().getQueryParameters().getParameterValue("componentPath");
+        final int oldPosition = oldPositionValue.toInt();
+        final int newPosition = newPositionValue.toInt();
+        final boolean out = outValue.toBoolean();
+        final String droppedComponentPath = componentPathValue.toString("");
+        final String boundComponentPath = this.getComponent().getPageRelativePath();
 
-		final int oldPosition = oldPositionValue.toInt();
-		final int newPosition = newPositionValue.toInt();
-		final boolean out = outValue.toBoolean();
-		final String droppedComponentPath = componentPathValue.toString("");
-		final String boundComponentPath = this.getComponent().getPageRelativePath();
+        if (boundComponentPath.equals(droppedComponentPath)) {
 
-		if (boundComponentPath.equals(droppedComponentPath)) {
+            /* The dropped component is one of our list items */
+            if (out) {
+                /* Item was dragged outside of the list, remove it */
+                this.onRemove(target, oldPosition, newPosition);
+            } else {
+                /* Item was dragged within the list, update position */
+                this.onPositionChanged(target, oldPosition, newPosition);
+            }
+        } else {
 
-			/* The dropped component is one of our list items */
-			if (out) {
-				/* Item was dragged outside of the list, remove it */
-				this.onRemove(target, oldPosition, newPosition);
-			} else {
-				/* Item was dragged within the list, update position */
-				this.onPositionChanged(target, oldPosition, newPosition);
-			}
+            /* Retrieve the dropped component by its path and insert its model into the list */
+            final Component droppedComponent = this.getComponent().getPage().get(droppedComponentPath);
+            Object droppedComponentModelObject = null;
+            if (droppedComponent != null) {
+                droppedComponentModelObject = droppedComponent.getDefaultModelObject();
+            }
+            this.onInsert(target, droppedComponentModelObject, newPosition);
+        }
+    }
 
-		} else {
+    @Override
+    public void renderHead(Component component, IHeaderResponse response)
+    {
+        super.renderHead(component, response);
 
-			/* Retrieve the dropped component by its path and insert its model into the list */
-			final Component droppedComponent = this.getComponent().getPage().get(droppedComponentPath);
-			Object droppedComponentModelObject = null;
-			if (droppedComponent != null) {
-				droppedComponentModelObject = droppedComponent.getDefaultModelObject();
-			}
-			this.onInsert(target, droppedComponentModelObject, newPosition);
-		}
-	}
+        final CharSequence callbackFunction = this.getCallbackFunction(
+                CallbackParameter.explicit("oldPosition"),
+                CallbackParameter.explicit("newPosition"),
+                CallbackParameter.explicit("out"),
+                CallbackParameter.explicit("componentPath")
+        );
 
-	@Override
-	public void renderHead(Component component, IHeaderResponse response)
-	{
-		super.renderHead(component, response);
+        String containment = "";
+        final Component containmentComponent = this.getContainment();
+        if (containmentComponent != null) {
+            containment = "#" + containmentComponent.getMarkupId();
+        }
 
-		final CharSequence callbackFunction = this.getCallbackFunction(
-				CallbackParameter.explicit("oldPosition"),
-				CallbackParameter.explicit("newPosition"),
-				CallbackParameter.explicit("out"),
-				CallbackParameter.explicit("componentPath"));
+        final PackageResourceReference sortableResourceReference =
+                new PackageResourceReference(SortableBehavior.class, "sortable.js");
 
-		String containment = "";
-		final Component containmentComponent = this.getContainment();
-		if (containmentComponent != null) {
-			containment = "#" + containmentComponent.getMarkupId();
-		}
+        final JavaScriptReferenceHeaderItem sortableHeaderItem = new JavaScriptReferenceHeaderItem(
+                sortableResourceReference,
+                null,
+                "jqueryui.sortable",
+                false,
+                null,
+                null
+        )
+        {
 
-		final PackageResourceReference sortableResourceReference =
-				new PackageResourceReference(SortableBehavior.class, "sortable.js");
+            @Override
+            public List<HeaderItem> getDependencies()
+            {
+                return Collections.singletonList(SortableBehavior.this.getJQueryUiHeaderItem());
+            }
+        };
 
-		final JavaScriptReferenceHeaderItem sortableHeaderItem = new JavaScriptReferenceHeaderItem(
-				sortableResourceReference,
-				null,
-				"jqueryui.sortable",
-				false,
-				null,
-				null) {
+        String handle = this.getHandle();
+        handle = handle == null ? "false" : "'" + handle + "'";
+        final OnDomReadyHeaderItem initHeaderItem = new OnDomReadyHeaderItem(
+                String.format(
+                        "initSortable('%s', %s, '%s', '%s', '%s', '%s', %s)",
+                        component.getMarkupId(),
+                        callbackFunction,
+                        component.getPageRelativePath(),
+                        this.itemSelector,
+                        this.getPlaceHolderClass(),
+                        containment,
+                        handle
+                ))
+        {
 
-			@Override
-			public List<HeaderItem> getDependencies()
-			{
-				return Collections.singletonList(SortableBehavior.this.getJQueryUiHeaderItem());
-			}
-		};
+            @Override
+            public List<HeaderItem> getDependencies()
+            {
+                return Collections.singletonList((HeaderItem) sortableHeaderItem);
+            }
+        };
 
-		String handle = this.getHandle();
-		handle = handle == null ? "false" : "'" + handle + "'";
-		final OnDomReadyHeaderItem initHeaderItem = new OnDomReadyHeaderItem(
-				String.format(
-						"initSortable('%s', %s, '%s', '%s', '%s', '%s', %s)",
-						component.getMarkupId(),
-						callbackFunction,
-						component.getPageRelativePath(),
-						this.itemSelector,
-						this.getPlaceHolderClass(),
-						containment,
-						handle)) {
+        response.render(initHeaderItem);
+    }
 
-			@Override
-			public List<HeaderItem> getDependencies()
-			{
-				return Collections.singletonList((HeaderItem) sortableHeaderItem);
-			}
-		};
+    protected HeaderItem getJQueryUiHeaderItem()
+    {
+        return new ExternalJQueryUiJsHeaderItem(false);
+    }
 
-		response.render(initHeaderItem);
-	}
+    protected String getHandle()
+    {
+        return null;
+    }
 
-	protected HeaderItem getJQueryUiHeaderItem()
-	{
-		return new ExternalJQueryUiJsHeaderItem(false);
-	}
+    protected String getPlaceHolderClass()
+    {
+        return "placeholder";
+    }
 
-	protected String getHandle()
-	{
-		return null;
-	}
+    protected Component getContainment()
+    {
+        return this.getComponent();
+    }
 
-	protected String getPlaceHolderClass()
-	{
-		return "placeholder";
-	}
+    protected abstract void onPositionChanged(AjaxRequestTarget target, int oldPosition, int newPosition);
 
-	protected Component getContainment()
-	{
-		return this.getComponent();
-	}
+    protected abstract void onRemove(AjaxRequestTarget target, int position, int newPosition);
 
-	protected abstract void onPositionChanged(AjaxRequestTarget target, int oldPosition, int newPosition);
-
-	protected abstract void onRemove(AjaxRequestTarget target, int position, int newPosition);
-
-	protected abstract void onInsert(AjaxRequestTarget target, Object droppedModelObject, int position);
+    protected abstract void onInsert(AjaxRequestTarget target, Object droppedModelObject, int position);
 }

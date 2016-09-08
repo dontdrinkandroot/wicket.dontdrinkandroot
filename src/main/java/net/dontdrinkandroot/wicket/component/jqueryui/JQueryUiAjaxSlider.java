@@ -18,7 +18,6 @@
 package net.dontdrinkandroot.wicket.component.jqueryui;
 
 import net.dontdrinkandroot.wicket.component.GenericWebMarkupContainer;
-
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -31,86 +30,96 @@ import org.apache.wicket.util.string.StringValue;
 
 public class JQueryUiAjaxSlider extends GenericWebMarkupContainer<Integer> implements IHeaderContributor {
 
-	private final AbstractDefaultAjaxBehavior valueChangedBehaviour;
+    private final AbstractDefaultAjaxBehavior valueChangedBehaviour;
 
-	private final int step;
+    private final int step;
 
-	private final IModel<Integer> maxModel;
+    private final IModel<Integer> maxModel;
 
-	private final IModel<Integer> minModel;
+    private final IModel<Integer> minModel;
 
+    public JQueryUiAjaxSlider(
+            final String id,
+            final IModel<Integer> model,
+            final int min,
+            final int max,
+            final int step
+    )
+    {
 
-	public JQueryUiAjaxSlider(final String id, final IModel<Integer> model, final int min, final int max, final int step) {
+        this(id, model, new Model<Integer>(min), new Model<Integer>(max), step);
+    }
 
-		this(id, model, new Model<Integer>(min), new Model<Integer>(max), step);
+    public JQueryUiAjaxSlider(
+            final String id,
+            final IModel<Integer> model,
+            IModel<Integer> minModel,
+            final IModel<Integer> maxModel,
+            final int step
+    )
+    {
 
-	}
+        super(id, model);
 
+        this.setOutputMarkupId(true);
 
-	public JQueryUiAjaxSlider(
-			final String id,
-			final IModel<Integer> model,
-			IModel<Integer> minModel,
-			final IModel<Integer> maxModel,
-			final int step) {
+        this.minModel = minModel;
+        this.maxModel = maxModel;
+        this.step = step;
 
-		super(id, model);
+        this.valueChangedBehaviour = new AbstractDefaultAjaxBehavior()
+        {
 
-		this.setOutputMarkupId(true);
+            private static final long serialVersionUID = 1L;
 
-		this.minModel = minModel;
-		this.maxModel = maxModel;
-		this.step = step;
+            @Override
+            protected void respond(final AjaxRequestTarget target)
+            {
 
-		this.valueChangedBehaviour = new AbstractDefaultAjaxBehavior() {
+                final StringValue value =
+                        JQueryUiAjaxSlider.this.getRequest().getQueryParameters().getParameterValue("value");
+                JQueryUiAjaxSlider.this.setModelObject(value.toInteger());
+                JQueryUiAjaxSlider.this.onValueChanged(target);
+            }
+        };
+        this.add(this.valueChangedBehaviour);
+    }
 
-			private static final long serialVersionUID = 1L;
+    @Override
+    public void renderHead(final IHeaderResponse response)
+    {
 
+        super.renderHead(response);
 
-			@Override
-			protected void respond(final AjaxRequestTarget target) {
+        response.render(OnDomReadyHeaderItem.forScript(String.format(
+                "$('#%s').slider({value: %d, min: %d, max: %d, step: %d, change: function(event, ui) {wicketAjaxGet('%s&value=' + ui.value)}"
+                        + "})",
+                this.getMarkupId(),
+                this.getModelObject(),
+                this.minModel.getObject(),
+                this.maxModel.getObject(),
+                this.step,
+                this.valueChangedBehaviour.getCallbackUrl()
+        )));
+    }
 
-				final StringValue value =
-						JQueryUiAjaxSlider.this.getRequest().getQueryParameters().getParameterValue("value");
-				JQueryUiAjaxSlider.this.setModelObject(value.toInteger());
-				JQueryUiAjaxSlider.this.onValueChanged(target);
-			}
+    public void onValueChanged(final AjaxRequestTarget target)
+    {
 
-		};
-		this.add(this.valueChangedBehaviour);
-	}
-
-
-	@Override
-	public void renderHead(final IHeaderResponse response) {
-
-		super.renderHead(response);
-
-		response.render(OnDomReadyHeaderItem.forScript(String.format(
-				"$('#%s').slider({value: %d, min: %d, max: %d, step: %d, change: function(event, ui) {wicketAjaxGet('%s&value=' + ui.value)}"
-						+ "})",
-				this.getMarkupId(),
-				this.getModelObject(),
-				this.minModel.getObject(),
-				this.maxModel.getObject(),
-				this.step,
-				this.valueChangedBehaviour.getCallbackUrl())));
-	}
-
-
-	public void onValueChanged(final AjaxRequestTarget target) {
-
-		target.appendJavaScript(String.format(
-				"$('#%s').slider({ 'option', 'max', %d})",
-				this.getMarkupId(),
-				this.maxModel.getObject()));
-		target.appendJavaScript(String.format(
-				"$('#%s').slider({ 'option', 'min', %d})",
-				this.getMarkupId(),
-				this.minModel.getObject()));
-		target.appendJavaScript(String.format(
-				"$('#%s').slider({ 'option', 'value', %d})",
-				this.getMarkupId(),
-				this.getModelObject()));
-	}
+        target.appendJavaScript(String.format(
+                "$('#%s').slider({ 'option', 'max', %d})",
+                this.getMarkupId(),
+                this.maxModel.getObject()
+        ));
+        target.appendJavaScript(String.format(
+                "$('#%s').slider({ 'option', 'min', %d})",
+                this.getMarkupId(),
+                this.minModel.getObject()
+        ));
+        target.appendJavaScript(String.format(
+                "$('#%s').slider({ 'option', 'value', %d})",
+                this.getMarkupId(),
+                this.getModelObject()
+        ));
+    }
 }

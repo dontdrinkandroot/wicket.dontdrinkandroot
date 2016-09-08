@@ -11,23 +11,23 @@ import org.apache.wicket.model.IModel;
  */
 public abstract class ButtonColumn<T, S> extends AbstractColumn<T, S>
 {
-	public ButtonColumn(IModel<String> displayModel)
-	{
-		super(displayModel);
-	}
+    public ButtonColumn(IModel<String> displayModel)
+    {
+        super(displayModel);
+    }
 
-	@Override
-	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel)
-	{
-		cellItem.add(new RepeatingButtonPanel<T>(componentId, rowModel)
-		{
-			@Override
-			protected void populateButtons(RepeatingView buttonView)
-			{
-				ButtonColumn.this.populateButtons(buttonView, rowModel);
-			}
-		});
-	}
+    @Override
+    public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel)
+    {
+        cellItem.add(new RepeatingButtonPanel<T>(componentId, rowModel)
+        {
+            @Override
+            protected void populateButtons(RepeatingView buttonView)
+            {
+                ButtonColumn.this.populateButtons(buttonView, rowModel);
+            }
+        });
+    }
 
-	protected abstract void populateButtons(RepeatingView buttonView, IModel<T> model);
+    protected abstract void populateButtons(RepeatingView buttonView, IModel<T> model);
 }

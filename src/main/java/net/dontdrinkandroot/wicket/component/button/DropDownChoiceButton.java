@@ -17,8 +17,9 @@
  */
 package net.dontdrinkandroot.wicket.component.button;
 
-import java.util.List;
-
+import net.dontdrinkandroot.wicket.behavior.CssClassAppender;
+import net.dontdrinkandroot.wicket.bootstrap.css.BootstrapCssClass;
+import net.dontdrinkandroot.wicket.model.AbstractChainedModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -32,159 +33,157 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 
-import net.dontdrinkandroot.wicket.behavior.CssClassAppender;
-import net.dontdrinkandroot.wicket.bootstrap.css.BootstrapCssClass;
-import net.dontdrinkandroot.wicket.model.AbstractChainedModel;
+import java.util.List;
 
 
 public class DropDownChoiceButton<T> extends FormComponentPanel<T>
 {
 
-	private final IModel<List<T>> choicesModel;
+    private final IModel<List<T>> choicesModel;
 
-	private IChoiceRenderer<? super T> choiceRenderer;
+    private IChoiceRenderer<? super T> choiceRenderer;
 
-	private Class<T> type;
+    private Class<T> type;
 
-	private HiddenField<T> valueInputField;
+    private HiddenField<T> valueInputField;
 
+    public DropDownChoiceButton(String id, IModel<T> model, List<T> choices)
+    {
+        this(id, model, new ListModel<T>(choices), new ChoiceRenderer<T>());
+    }
 
-	public DropDownChoiceButton(String id, IModel<T> model, List<T> choices)
-	{
-		this(id, model, new ListModel<T>(choices), new ChoiceRenderer<T>());
-	}
+    public DropDownChoiceButton(String id, IModel<T> model, IModel<List<T>> choicesModel)
+    {
+        this(id, model, choicesModel, new ChoiceRenderer<T>());
+    }
 
-	public DropDownChoiceButton(String id, IModel<T> model, IModel<List<T>> choicesModel)
-	{
-		this(id, model, choicesModel, new ChoiceRenderer<T>());
-	}
+    public DropDownChoiceButton(
+            String id,
+            IModel<T> model,
+            IModel<List<T>> choicesModel,
+            IChoiceRenderer<? super T> choiceRenderer
+    )
+    {
+        super(id, model);
 
-	public DropDownChoiceButton(
-			String id,
-			IModel<T> model,
-			IModel<List<T>> choicesModel,
-			IChoiceRenderer<? super T> choiceRenderer)
-	{
-		super(id, model);
+        this.choicesModel = choicesModel;
+        this.setChoiceRenderer(choiceRenderer);
+    }
 
-		this.choicesModel = choicesModel;
-		this.setChoiceRenderer(choiceRenderer);
-	}
+    public DropDownChoiceButton(String id, IModel<T> model, IModel<List<T>> choicesModel, Class<T> type)
+    {
+        this(id, model, choicesModel, new ChoiceRenderer<T>(), type);
+    }
 
-	public DropDownChoiceButton(String id, IModel<T> model, IModel<List<T>> choicesModel, Class<T> type)
-	{
-		this(id, model, choicesModel, new ChoiceRenderer<T>(), type);
-	}
+    public DropDownChoiceButton(
+            String id,
+            IModel<T> model,
+            IModel<List<T>> choicesModel,
+            IChoiceRenderer<? super T> choiceRenderer,
+            Class<T> type
+    )
+    {
+        super(id, model);
 
-	public DropDownChoiceButton(
-			String id,
-			IModel<T> model,
-			IModel<List<T>> choicesModel,
-			IChoiceRenderer<? super T> choiceRenderer,
-			Class<T> type)
-	{
-		super(id, model);
+        this.choicesModel = choicesModel;
+        this.setChoiceRenderer(choiceRenderer);
+        this.type = type;
+    }
 
-		this.choicesModel = choicesModel;
-		this.setChoiceRenderer(choiceRenderer);
-		this.type = type;
-	}
+    @Override
+    protected void onInitialize()
+    {
+        super.onInitialize();
 
-	@Override
-	protected void onInitialize()
-	{
-		super.onInitialize();
+        this.setOutputMarkupId(true);
+        this.add(new CssClassAppender(BootstrapCssClass.BTN_GROUP));
+        this.add(new CssClassAppender("dropdownchoice"));
 
-		this.setOutputMarkupId(true);
-		this.add(new CssClassAppender(BootstrapCssClass.BTN_GROUP));
-		this.add(new CssClassAppender("dropdownchoice"));
+        final Label selectedLabel = new Label("selected", new ChoiceModel(this.getModel()));
+        selectedLabel.add(new CssClassAppender("selection"));
+        this.add(selectedLabel);
 
-		final Label selectedLabel = new Label("selected", new ChoiceModel(this.getModel()));
-		selectedLabel.add(new CssClassAppender("selection"));
-		this.add(selectedLabel);
+        final ListView<T> choicesView = new ListView<T>("choiceItem", this.choicesModel)
+        {
 
-		final ListView<T> choicesView = new ListView<T>("choiceItem", this.choicesModel) {
+            @Override
+            protected void populateItem(final ListItem<T> item)
+            {
+                DropDownChoiceButton.this.populateItem(item);
+            }
+        };
+        this.add(choicesView);
 
-			@Override
-			protected void populateItem(final ListItem<T> item)
-			{
-				DropDownChoiceButton.this.populateItem(item);
-			}
+        this.valueInputField = new HiddenField<T>("valueInput", this.getModel(), this.type);
+        this.add(this.valueInputField);
+    }
 
-		};
-		this.add(choicesView);
+    protected void populateItem(final ListItem<T> item)
+    {
+        final AjaxLink<Void> choiceLink = new AjaxLink<Void>("choiceLink")
+        {
 
-		this.valueInputField = new HiddenField<T>("valueInput", this.getModel(), this.type);
-		this.add(this.valueInputField);
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+                DropDownChoiceButton.this.onSelectionChanged(target, item.getModelObject());
+            }
+        };
+        choiceLink.setBody(new ChoiceModel(item.getModel()));
+        item.add(choiceLink);
+    }
 
-	protected void populateItem(final ListItem<T> item)
-	{
-		final AjaxLink<Void> choiceLink = new AjaxLink<Void>("choiceLink") {
+    protected void onSelectionChanged(AjaxRequestTarget target, T selection)
+    {
+        this.setModelObject(selection);
+        target.add(this);
+        this.onSelectionChanged(target);
+    }
 
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				DropDownChoiceButton.this.onSelectionChanged(target, item.getModelObject());
-			}
+    protected void onSelectionChanged(AjaxRequestTarget target)
+    {
+        /* Override to act on changes */
+    }
 
-		};
-		choiceLink.setBody(new ChoiceModel(item.getModel()));
-		item.add(choiceLink);
-	}
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
+        //
+        // response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+        // DropDownChoiceButton.class,
+        // "dropdownchoicescale.js"), "dropdownchoicescale"));
+        // response.render(OnLoadHeaderItem.forScript("scaleDropDownChoices()"));
+    }
 
-	protected void onSelectionChanged(AjaxRequestTarget target, T selection)
-	{
-		this.setModelObject(selection);
-		target.add(this);
-		this.onSelectionChanged(target);
-	}
+    @Override
+    public void convertInput()
+    {
+        this.setConvertedInput(this.valueInputField.getConvertedInput());
+    }
 
-	protected void onSelectionChanged(AjaxRequestTarget target)
-	{
-		/* Override to act on changes */
-	}
+    public IChoiceRenderer<? super T> getChoiceRenderer()
+    {
+        return this.choiceRenderer;
+    }
 
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-		//
-		// response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
-		// DropDownChoiceButton.class,
-		// "dropdownchoicescale.js"), "dropdownchoicescale"));
-		// response.render(OnLoadHeaderItem.forScript("scaleDropDownChoices()"));
-	}
+    public void setChoiceRenderer(IChoiceRenderer<? super T> choiceRenderer)
+    {
+        this.choiceRenderer = choiceRenderer;
+    }
 
-	@Override
-	public void convertInput()
-	{
-		this.setConvertedInput(this.valueInputField.getConvertedInput());
-	}
+    class ChoiceModel extends AbstractChainedModel<T, Object>
+    {
 
-	public IChoiceRenderer<? super T> getChoiceRenderer()
-	{
-		return this.choiceRenderer;
-	}
+        public ChoiceModel(IModel<? extends T> parent)
+        {
+            super(parent);
+        }
 
-	public void setChoiceRenderer(IChoiceRenderer<? super T> choiceRenderer)
-	{
-		this.choiceRenderer = choiceRenderer;
-	}
-
-
-	class ChoiceModel extends AbstractChainedModel<T, Object>
-	{
-
-		public ChoiceModel(IModel<? extends T> parent)
-		{
-			super(parent);
-		}
-
-		@Override
-		public Object getObject()
-		{
-			return DropDownChoiceButton.this.getChoiceRenderer().getDisplayValue(this.getParentObject());
-		}
-	}
+        @Override
+        public Object getObject()
+        {
+            return DropDownChoiceButton.this.getChoiceRenderer().getDisplayValue(this.getParentObject());
+        }
+    }
 }

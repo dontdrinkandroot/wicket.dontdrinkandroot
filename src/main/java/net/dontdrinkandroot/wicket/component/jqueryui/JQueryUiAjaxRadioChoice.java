@@ -17,8 +17,7 @@
  */
 package net.dontdrinkandroot.wicket.component.jqueryui;
 
-import java.util.List;
-
+import net.dontdrinkandroot.wicket.javascript.jqueryui.JQueryUiScript;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -36,120 +35,125 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 
-import net.dontdrinkandroot.wicket.javascript.jqueryui.JQueryUiScript;
+import java.util.List;
 
 
 public class JQueryUiAjaxRadioChoice<T> extends GenericPanel<T>
 {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/** The list of objects. */
-	private IModel<? extends List<T>> choices;
+    /**
+     * The list of objects.
+     */
+    private IModel<? extends List<T>> choices;
 
-	/** The renderer used to generate display/id values for the objects. */
-	private IChoiceRenderer<? super T> renderer;
+    /**
+     * The renderer used to generate display/id values for the objects.
+     */
+    private IChoiceRenderer<? super T> renderer;
 
+    public JQueryUiAjaxRadioChoice(String id, IModel<T> model, List<T> choices)
+    {
+        this(id, model, new ListModel<T>(choices), new ChoiceRenderer<T>());
+    }
 
-	public JQueryUiAjaxRadioChoice(String id, IModel<T> model, List<T> choices)
-	{
-		this(id, model, new ListModel<T>(choices), new ChoiceRenderer<T>());
-	}
+    public JQueryUiAjaxRadioChoice(
+            final String id,
+            IModel<T> model,
+            final List<T> choices,
+            final IChoiceRenderer<? super T> renderer
+    )
+    {
+        this(id, model, new ListModel<T>(choices), renderer);
+    }
 
-	public JQueryUiAjaxRadioChoice(
-			final String id,
-			IModel<T> model,
-			final List<T> choices,
-			final IChoiceRenderer<? super T> renderer)
-	{
-		this(id, model, new ListModel<T>(choices), renderer);
-	}
+    public JQueryUiAjaxRadioChoice(String id, IModel<T> model, IModel<? extends List<T>> choices)
+    {
+        this(id, model, choices, new ChoiceRenderer<T>());
+    }
 
-	public JQueryUiAjaxRadioChoice(String id, IModel<T> model, IModel<? extends List<T>> choices)
-	{
-		this(id, model, choices, new ChoiceRenderer<T>());
-	}
+    public JQueryUiAjaxRadioChoice(
+            String id,
+            IModel<T> model,
+            IModel<? extends List<T>> choices,
+            IChoiceRenderer<? super T> renderer
+    )
+    {
+        super(id, model);
 
-	public JQueryUiAjaxRadioChoice(
-			String id,
-			IModel<T> model,
-			IModel<? extends List<T>> choices,
-			IChoiceRenderer<? super T> renderer)
-	{
-		super(id, model);
+        this.setOutputMarkupId(true);
 
-		this.setOutputMarkupId(true);
+        this.choices = choices;
+        this.setChoiceRenderer(renderer);
 
-		this.choices = choices;
-		this.setChoiceRenderer(renderer);
+        final RadioGroup<T> radioGroup = new RadioGroup<T>("radioGroup", model);
+        this.add(radioGroup);
 
-		final RadioGroup<T> radioGroup = new RadioGroup<T>("radioGroup", model);
-		this.add(radioGroup);
+        final ListView<T> radioItemView = new ListView<T>("radioItem", choices)
+        {
 
-		final ListView<T> radioItemView = new ListView<T>("radioItem", choices) {
+            private static final long serialVersionUID = 1L;
 
-			private static final long serialVersionUID = 1L;
+            @Override
+            protected void populateItem(final ListItem<T> item)
+            {
 
+                final Radio<T> radio = new Radio<T>("input", item.getModel(), radioGroup);
+                radio.setOutputMarkupId(true);
+                radio.add(new AjaxEventBehavior("onclick")
+                {
 
-			@Override
-			protected void populateItem(final ListItem<T> item)
-			{
+                    private static final long serialVersionUID = 1L;
 
-				final Radio<T> radio = new Radio<T>("input", item.getModel(), radioGroup);
-				radio.setOutputMarkupId(true);
-				radio.add(new AjaxEventBehavior("onclick") {
+                    @Override
+                    protected void onEvent(AjaxRequestTarget target)
+                    {
+                        JQueryUiAjaxRadioChoice.this.onSelectionChanged(item.getModelObject(), target);
+                    }
+                });
+                item.add(radio);
 
-					private static final long serialVersionUID = 1L;
+                final Label label = new Label(
+                        "label",
+                        JQueryUiAjaxRadioChoice.this.getChoiceRenderer().getDisplayValue(
+                                item.getModel().getObject()).toString()
+                );
+                label.add(new AttributeAppender("for", new Model<String>(radio.getMarkupId())));
+                item.add(label);
 
+                item.setRenderBodyOnly(true);
+            }
+        };
+        radioGroup.add(radioItemView);
+    }
 
-					@Override
-					protected void onEvent(AjaxRequestTarget target)
-					{
-						JQueryUiAjaxRadioChoice.this.onSelectionChanged(item.getModelObject(), target);
-					}
-				});
-				item.add(radio);
+    public final JQueryUiAjaxRadioChoice<T> setChoiceRenderer(IChoiceRenderer<? super T> renderer)
+    {
+        if (renderer == null) {
+            this.renderer = new ChoiceRenderer<T>();
+        }
+        this.renderer = renderer;
 
-				final Label label = new Label(
-						"label",
-						JQueryUiAjaxRadioChoice.this.getChoiceRenderer().getDisplayValue(
-								item.getModel().getObject()).toString());
-				label.add(new AttributeAppender("for", new Model<String>(radio.getMarkupId())));
-				item.add(label);
+        return this;
+    }
 
-				item.setRenderBodyOnly(true);
-			}
+    public final IChoiceRenderer<? super T> getChoiceRenderer()
+    {
+        return this.renderer;
+    }
 
-		};
-		radioGroup.add(radioItemView);
-	}
+    protected void onSelectionChanged(T newValue, AjaxRequestTarget target)
+    {
+        this.setModelObject(newValue);
+    }
 
-	public final JQueryUiAjaxRadioChoice<T> setChoiceRenderer(IChoiceRenderer<? super T> renderer)
-	{
-		if (renderer == null) {
-			this.renderer = new ChoiceRenderer<T>();
-		}
-		this.renderer = renderer;
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
 
-		return this;
-	}
-
-	public final IChoiceRenderer<? super T> getChoiceRenderer()
-	{
-		return this.renderer;
-	}
-
-	protected void onSelectionChanged(T newValue, AjaxRequestTarget target)
-	{
-		this.setModelObject(newValue);
-	}
-
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		super.renderHead(response);
-
-		response.render(OnDomReadyHeaderItem.forScript(new JQueryUiScript(this).buttonset().toString()));
-	}
+        response.render(OnDomReadyHeaderItem.forScript(new JQueryUiScript(this).buttonset().toString()));
+    }
 
 }

@@ -2,22 +2,22 @@ package net.dontdrinkandroot.wicket.model.progress;
 
 import net.dontdrinkandroot.utils.progressmonitor.ProgressMonitor;
 import net.dontdrinkandroot.wicket.model.AbstractChainedModel;
-
 import org.apache.wicket.model.IModel;
 
 
 public class ProgressMonitorMessageModel extends AbstractChainedModel<ProgressMonitor, String> {
 
-	public ProgressMonitorMessageModel(IModel<? extends ProgressMonitor> parent) {
+    public ProgressMonitorMessageModel(IModel<? extends ProgressMonitor> parent)
+    {
 
-		super(parent);
-	}
+        super(parent);
+    }
 
+    @Override
+    public String getObject()
+    {
 
-	@Override
-	public String getObject() {
-
-		return this.getParent().getObject().getMessage();
-	}
+        return this.getParent().getObject().getMessage();
+    }
 
 }

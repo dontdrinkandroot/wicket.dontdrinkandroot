@@ -13,35 +13,35 @@ import java.util.Iterator;
  */
 public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataProvider<T>
 {
-	private final EntityService<T, K> service;
-	private Class<T> entityClass;
+    private final EntityService<T, K> service;
+    private Class<T> entityClass;
 
-	public EntityServiceDataProvider(EntityService<T, K> service, Class<T> entityClass)
-	{
-		this.service = service;
-		this.entityClass = entityClass;
-	}
+    public EntityServiceDataProvider(EntityService<T, K> service, Class<T> entityClass)
+    {
+        this.service = service;
+        this.entityClass = entityClass;
+    }
 
-	@Override
-	public Iterator<? extends T> iterator(long first, long count)
-	{
-		return this.service.listAll(first, count).iterator();
-	}
+    @Override
+    public Iterator<? extends T> iterator(long first, long count)
+    {
+        return this.service.listAll(first, count).iterator();
+    }
 
-	@Override
-	public long size()
-	{
-		return this.service.findCount();
-	}
+    @Override
+    public long size()
+    {
+        return this.service.findCount();
+    }
 
-	public IModel<T> model(T object)
-	{
-		return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
-	}
+    public IModel<T> model(T object)
+    {
+        return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
+    }
 
-	@Override
-	public void detach()
-	{
-		/* Noop */
-	}
+    @Override
+    public void detach()
+    {
+        /* Noop */
+    }
 }

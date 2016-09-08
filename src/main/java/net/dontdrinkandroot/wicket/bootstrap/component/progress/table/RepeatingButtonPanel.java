@@ -11,22 +11,22 @@ import org.apache.wicket.model.IModel;
  */
 public abstract class RepeatingButtonPanel<T> extends GenericPanel<T>
 {
-	public RepeatingButtonPanel(String id, IModel<T> model)
-	{
-		super(id, model);
-	}
+    public RepeatingButtonPanel(String id, IModel<T> model)
+    {
+        super(id, model);
+    }
 
-	@Override
-	protected void onInitialize()
-	{
-		super.onInitialize();
+    @Override
+    protected void onInitialize()
+    {
+        super.onInitialize();
 
-		this.add(new CssClassAppender(BootstrapCssClass.BTN_GROUP));
+        this.add(new CssClassAppender(BootstrapCssClass.BTN_GROUP));
 
-		RepeatingView buttonView = new RepeatingView("button");
-		this.populateButtons(buttonView);
-		this.add(buttonView);
-	}
+        RepeatingView buttonView = new RepeatingView("button");
+        this.populateButtons(buttonView);
+        this.add(buttonView);
+    }
 
-	protected abstract void populateButtons(RepeatingView buttonView);
+    protected abstract void populateButtons(RepeatingView buttonView);
 }

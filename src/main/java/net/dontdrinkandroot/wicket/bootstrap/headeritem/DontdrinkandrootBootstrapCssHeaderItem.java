@@ -6,9 +6,9 @@ import org.apache.wicket.markup.head.CssUrlReferenceHeaderItem;
 public class DontdrinkandrootBootstrapCssHeaderItem extends CssUrlReferenceHeaderItem
 {
 
-	public DontdrinkandrootBootstrapCssHeaderItem()
-	{
-		super("https://static.dontdrinkandroot.net/design/1.0/style.css", "screen", null);
-	}
+    public DontdrinkandrootBootstrapCssHeaderItem()
+    {
+        super("https://static.dontdrinkandroot.net/design/1.0/style.css", "screen", null);
+    }
 
 }

@@ -15,23 +15,23 @@ import javax.persistence.metamodel.SingularAttribute;
  */
 public class SingularAttributeColumn<T> extends AbstractColumn<T, SingularAttribute<T, ?>> implements IExportableColumn<T, SingularAttribute<T, ?>>
 {
-	public SingularAttributeColumn(IModel<String> displayModel, SingularAttribute<T, ?> sortProperty)
-	{
-		super(displayModel, sortProperty);
-	}
+    public SingularAttributeColumn(IModel<String> displayModel, SingularAttribute<T, ?> sortProperty)
+    {
+        super(displayModel, sortProperty);
+    }
 
-	@Override
-	public void populateItem(
-			final Item<ICellPopulator<T>> item, final String componentId,
-			final IModel<T> rowModel
-	)
-	{
-		item.add(new Label(componentId, this.getDataModel(rowModel)));
-	}
+    @Override
+    public void populateItem(
+            final Item<ICellPopulator<T>> item, final String componentId,
+            final IModel<T> rowModel
+    )
+    {
+        item.add(new Label(componentId, this.getDataModel(rowModel)));
+    }
 
-	@Override
-	public IModel<?> getDataModel(IModel<T> rowModel)
-	{
-		return new PropertyModel<>(rowModel, this.getSortProperty().getName());
-	}
+    @Override
+    public IModel<?> getDataModel(IModel<T> rowModel)
+    {
+        return new PropertyModel<>(rowModel, this.getSortProperty().getName());
+    }
 }

@@ -21,9 +21,10 @@ import net.dontdrinkandroot.wicket.bootstrap.headeritem.ExternalD3V2JavaScriptHe
 
 public class ExternalD3JavaScriptHeaderItem extends ExternalD3V2JavaScriptHeaderItem {
 
-	public ExternalD3JavaScriptHeaderItem(boolean defer) {
+    public ExternalD3JavaScriptHeaderItem(boolean defer)
+    {
 
-		super(defer);
-	}
+        super(defer);
+    }
 
 }

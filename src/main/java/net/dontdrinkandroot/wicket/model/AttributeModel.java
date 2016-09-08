@@ -1,5 +1,6 @@
 package net.dontdrinkandroot.wicket.model;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 import javax.persistence.metamodel.Attribute;
@@ -9,8 +10,13 @@ import javax.persistence.metamodel.Attribute;
  */
 public class AttributeModel<E, T> extends PropertyModel<T>
 {
-	public AttributeModel(Object modelObject, Attribute<E, T> attribute)
-	{
-		super(modelObject, attribute.getName());
-	}
+    public AttributeModel(E modelObject, Attribute<E, T> attribute)
+    {
+        super(modelObject, attribute.getName());
+    }
+
+    public AttributeModel(IModel<? extends E> model, Attribute<E, T> attribute)
+    {
+        super(model, attribute.getName());
+    }
 }

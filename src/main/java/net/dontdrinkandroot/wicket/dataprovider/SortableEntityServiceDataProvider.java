@@ -16,44 +16,44 @@ import java.util.Iterator;
  */
 public class SortableEntityServiceDataProvider<T extends Entity<K>, K> extends SortableDataProvider<T, SingularAttribute<T, ?>>
 {
-	private final EntityService<T, K> service;
+    private final EntityService<T, K> service;
 
-	private final Class<T> entityClass;
+    private final Class<T> entityClass;
 
-	public SortableEntityServiceDataProvider(EntityService<T, K> service, Class<T> clazz)
-	{
-		this.service = service;
-		this.entityClass = clazz;
-	}
+    public SortableEntityServiceDataProvider(EntityService<T, K> service, Class<T> clazz)
+    {
+        this.service = service;
+        this.entityClass = clazz;
+    }
 
-	@Override
-	public Iterator<? extends T> iterator(long first, long count)
-	{
-		SortParam<SingularAttribute<T, ?>> sort = this.getSort();
-		if (null != sort) {
-			SingularAttribute<T, ?> sortAttribute = sort.getProperty();
-			ISortState<SingularAttribute<T, ?>> sortState = this.getSortState();
-			return this.service.listAll(first, count, sortAttribute, sort.isAscending()).iterator();
-		}
+    @Override
+    public Iterator<? extends T> iterator(long first, long count)
+    {
+        SortParam<SingularAttribute<T, ?>> sort = this.getSort();
+        if (null != sort) {
+            SingularAttribute<T, ?> sortAttribute = sort.getProperty();
+            ISortState<SingularAttribute<T, ?>> sortState = this.getSortState();
+            return this.service.listAll(first, count, sortAttribute, sort.isAscending()).iterator();
+        }
 
-		return this.service.listAll(first, count).iterator();
-	}
+        return this.service.listAll(first, count).iterator();
+    }
 
-	@Override
-	public long size()
-	{
-		return this.service.findCount();
-	}
+    @Override
+    public long size()
+    {
+        return this.service.findCount();
+    }
 
-	@Override
-	public IModel<T> model(T object)
-	{
-		return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
-	}
+    @Override
+    public IModel<T> model(T object)
+    {
+        return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
+    }
 
-	@Override
-	public void detach()
-	{
-		/* Noop */
-	}
+    @Override
+    public void detach()
+    {
+        /* Noop */
+    }
 }

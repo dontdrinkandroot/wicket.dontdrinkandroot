@@ -22,88 +22,90 @@ import java.util.Locale;
 // TODO: Add output format localization
 public class FormGroupLocalDatePicker extends FormGroupFormComponent<LocalDate, LocalDate, HiddenField<LocalDate>>
 {
-	private Label dateLabel;
+    private Label dateLabel;
 
-	public FormGroupLocalDatePicker(String id, IModel<String> labelModel, IModel<LocalDate> model)
-	{
-		super(id, labelModel, model);
-	}
+    public FormGroupLocalDatePicker(String id, IModel<String> labelModel, IModel<LocalDate> model)
+    {
+        super(id, labelModel, model);
+    }
 
-	@Override
-	protected void createComponents()
-	{
-		super.createComponents();
-		this.dateLabel = new Label("dateLabel", this.getModel());
-		this.dateLabel.setOutputMarkupId(true);
-	}
+    @Override
+    protected void createComponents()
+    {
+        super.createComponents();
+        this.dateLabel = new Label("dateLabel", this.getModel());
+        this.dateLabel.setOutputMarkupId(true);
+    }
 
-	@Override
-	protected void addComponents()
-	{
-		super.addComponents();
-		this.container.add(this.dateLabel);
-	}
+    @Override
+    protected void addComponents()
+    {
+        super.addComponents();
+        this.container.add(this.dateLabel);
+    }
 
-	@Override
-	protected void addBehaviors()
-	{
-		super.addBehaviors();
-		this.getFormComponent().add(new AjaxFormComponentUpdatingBehavior("change")
-		{
+    @Override
+    protected void addBehaviors()
+    {
+        super.addBehaviors();
+        this.getFormComponent().add(new AjaxFormComponentUpdatingBehavior("change")
+        {
 
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.add(FormGroupLocalDatePicker.this.dateLabel);
-			}
-		});
-	}
+            @Override
+            protected void onUpdate(AjaxRequestTarget target)
+            {
+                target.add(FormGroupLocalDatePicker.this.dateLabel);
+            }
+        });
+    }
 
-	@Override
-	protected HiddenField<LocalDate> createFormComponent(String id)
-	{
-		HiddenField<LocalDate> hiddenField = new HiddenField<LocalDate>(id, this.getModel(), LocalDate.class)
-		{
+    @Override
+    protected HiddenField<LocalDate> createFormComponent(String id)
+    {
+        HiddenField<LocalDate> hiddenField = new HiddenField<LocalDate>(id, this.getModel(), LocalDate.class)
+        {
 
-			@Override
-			public <C> IConverter<C> getConverter(Class<C> type)
-			{
-				if (LocalDate.class.isAssignableFrom(type)) {
-					return (IConverter<C>) new AbstractConverter<LocalDate>()
-					{
+            @Override
+            public <C> IConverter<C> getConverter(Class<C> type)
+            {
+                if (LocalDate.class.isAssignableFrom(type)) {
+                    return (IConverter<C>) new AbstractConverter<LocalDate>()
+                    {
 
-						@Override
-						public LocalDate convertToObject(String value, Locale locale) throws ConversionException
-						{
-							return LocalDate.parse(value);
-						}
+                        @Override
+                        public LocalDate convertToObject(String value, Locale locale) throws ConversionException
+                        {
+                            return LocalDate.parse(value);
+                        }
 
-						@Override
-						protected Class<LocalDate> getTargetType()
-						{
-							return LocalDate.class;
-						}
-					};
-				} else {
-					return super.getConverter(type);
-				}
-			}
-		};
-		return hiddenField;
-	}
+                        @Override
+                        protected Class<LocalDate> getTargetType()
+                        {
+                            return LocalDate.class;
+                        }
+                    };
+                } else {
+                    return super.getConverter(type);
+                }
+            }
+        };
+        return hiddenField;
+    }
 
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		response.render(new BootstrapDatetimepickerJsHeaderItem());
-		response.render(new BootstrapDatetimepickerCssHeaderItem());
-		response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(this.getClass(),
-				"datetimepicker.js"
-		)));
-		response.render(new OnLoadHeaderItem(String.format("initDateTimePicker('%s', '%s', '%s')",
-				this.getMarkupId(),
-				"YYYY-MM-DD",
-				this.getLocale().getLanguage()
-		)));
-	}
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        response.render(new BootstrapDatetimepickerJsHeaderItem());
+        response.render(new BootstrapDatetimepickerCssHeaderItem());
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(
+                this.getClass(),
+                "datetimepicker.js"
+        )));
+        response.render(new OnLoadHeaderItem(String.format(
+                "initDateTimePicker('%s', '%s', '%s')",
+                this.getMarkupId(),
+                "YYYY-MM-DD",
+                this.getLocale().getLanguage()
+        )));
+    }
 }
