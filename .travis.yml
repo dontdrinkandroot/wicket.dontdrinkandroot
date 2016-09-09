@@ -16,4 +16,4 @@ before_install:
   - npm install -g bower
 
 after_success:
-  - '[ $TRAVIS_JDK_VERSION == "oraclejdk8" ] && { mvn clean deploy --settings travis-maven-settings.xml; };'
+  - mvn clean deploy --settings travis-maven-settings.xml
