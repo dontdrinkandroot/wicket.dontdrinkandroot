@@ -5,15 +5,15 @@ jdk:
 
 cache:
   directories:
-    - '$HOME/.m2/repository'
+    - "$HOME/.m2/repository"
 
 env:
   global:
-  - NEXUS_USERNAME=travis
-  - secure: r2wf/KIZhyLmflhBr2UVrFt2z29J21aX3kL5+Iw/ClLQn2HXf4Q3UKhfw9YQTMkvgusXtBkfo7eKN9C7d+ndtdsf4ccqtUuT0piRTHx0+Y75Td10ntSE6qasN2dL3adFWcTFLdnFPBv+7CdlxeK2XUloJK8rxFvFteKXLHVgfpk=
+    - NEXUS_USERNAME=travis
+    - secure: nUO6i7ZkFW+cKNspEbOr5sj4CsY6AKfBGT/pDlPbdXOXjH+55MJY3cSAfC8jgDeIyJ6qMJuWiGf1Elg8Xnuicu5RsLKk3URUKn3peydJ/KwJe8XRdE6RYpKiMSp57PyQwHrbcGeyTEReHtThwu/v29xT29K/QRcxeDyyibSnj6M=
 
 before_install:
   - npm install -g bower
 
 after_success:
-  - "[ $TRAVIS_JDK_VERSION == \"oraclejdk8\" ] && { mvn clean deploy --settings travis-maven-settings.xml; };"
+  - '[ $TRAVIS_JDK_VERSION == "oraclejdk8" ] && { mvn clean deploy --settings travis-maven-settings.xml; };'

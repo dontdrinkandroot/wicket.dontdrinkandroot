@@ -3,4 +3,4 @@
 .classpath
 .settings
 target
-/src/main/resources/net/dontdrinkandroot/wicket/bower/
+/wicket/src/main/resources/net/dontdrinkandroot/extension/wicket/bower/
