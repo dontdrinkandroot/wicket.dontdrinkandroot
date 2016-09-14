@@ -3,7 +3,7 @@ package net.dontdrinkandroot.extensions.wicket.component.form.formgroup;
 import net.dontdrinkandroot.extensions.wicket.bower.BootstrapDatetimepickerCssHeaderItem;
 import net.dontdrinkandroot.extensions.wicket.bower.BootstrapDatetimepickerJsHeaderItem;
 import net.dontdrinkandroot.wicket.bootstrap.component.form.formgroup.FormGroupFormComponent;
-import net.dontdrinkandroot.wicket.model.TemporalAccessorFormatModel;
+import net.dontdrinkandroot.wicket.model.DateTimeFormatterModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -37,7 +37,7 @@ public class FormGroupLocalDateTimePicker extends FormGroupFormComponent<LocalDa
     protected void createComponents()
     {
         super.createComponents();
-        this.dateLabel = new Label("dateLabel", new TemporalAccessorFormatModel(this.getModel(), PATTERN));
+        this.dateLabel = new Label("dateLabel", new DateTimeFormatterModel(this.getModel(), PATTERN));
         this.dateLabel.setOutputMarkupId(true);
     }
 
