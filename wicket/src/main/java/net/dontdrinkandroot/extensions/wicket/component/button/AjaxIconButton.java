@@ -5,6 +5,7 @@ import net.dontdrinkandroot.wicket.behavior.CssClassAppender;
 import net.dontdrinkandroot.wicket.behavior.TitleModifier;
 import net.dontdrinkandroot.wicket.bootstrap.behavior.IconBehavior;
 import net.dontdrinkandroot.wicket.bootstrap.component.button.AjaxButton;
+import net.dontdrinkandroot.wicket.bootstrap.css.FontAwesomeIconClass;
 import net.dontdrinkandroot.wicket.css.CssClass;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -29,12 +30,44 @@ public abstract class AjaxIconButton<T> extends AjaxButton<T>
         this.titleModel = titleModel;
     }
 
+    public AjaxIconButton(String id, FontAwesomeIconClass iconClass, String title)
+    {
+        super(id);
+
+        this.iconClassModel = Model.of(iconClass.createIcon().setFixedWidth(true));
+        this.titleModel = Model.of(title);
+    }
+
+    public AjaxIconButton(String id, FontAwesomeIconClass iconClass, IModel<String> titleModel)
+    {
+        super(id);
+
+        this.iconClassModel = Model.of(iconClass.createIcon().setFixedWidth(true));
+        this.titleModel = titleModel;
+    }
+
     public AjaxIconButton(String id, IModel<CssClass> iconClassModel, IModel<String> titleModel)
     {
         super(id);
 
         this.iconClassModel = iconClassModel;
         this.titleModel = titleModel;
+    }
+
+    public AjaxIconButton(String id, IModel<T> model, FontAwesomeIconClass iconClass, IModel<String> titleModel)
+    {
+        super(id, model);
+
+        this.iconClassModel = Model.of(iconClass.createIcon().setFixedWidth(true));
+        this.titleModel = titleModel;
+    }
+
+    public AjaxIconButton(String id, IModel<T> model, FontAwesomeIconClass iconClass, String title)
+    {
+        super(id, model);
+
+        this.iconClassModel = Model.of(iconClass.createIcon().setFixedWidth(true));
+        this.titleModel = Model.of(title);
     }
 
     public AjaxIconButton(String id, IModel<T> model, CssClass iconClass, IModel<String> titleModel)

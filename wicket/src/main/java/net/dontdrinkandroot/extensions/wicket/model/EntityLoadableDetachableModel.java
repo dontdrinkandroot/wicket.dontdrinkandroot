@@ -3,6 +3,7 @@ package net.dontdrinkandroot.extensions.wicket.model;
 import net.dontdrinkandroot.persistence.entity.Entity;
 import net.dontdrinkandroot.persistence.util.EntityLoader;
 import net.dontdrinkandroot.wicket.model.AbstractInjectedLoadableDetachableModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -16,6 +17,11 @@ public class EntityLoadableDetachableModel<T extends Entity<K>, K> extends Abstr
 
     @SpringBean
     private EntityLoader entityLoader;
+
+    public EntityLoadableDetachableModel(IModel<? extends T> model, Class<T> clazz)
+    {
+        this(model.getObject(), clazz);
+    }
 
     public EntityLoadableDetachableModel(T object, Class<T> clazz)
     {
