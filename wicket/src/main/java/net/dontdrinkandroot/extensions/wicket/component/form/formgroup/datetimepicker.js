@@ -1,5 +1,5 @@
-function initDateTimePicker(id, format, locale) {
-    $('#' + id + ' input').datetimepicker({
+function initDateTimePicker(id, format, locale, viewMode) {
+    var options = {
         'locale': locale,
         'format': format,
         'icons': {
@@ -13,9 +13,11 @@ function initDateTimePicker(id, format, locale) {
             clear: 'fa fa-trash',
             close: 'fa fa-times'
         },
+        'viewMode': viewMode,
         'sideBySide': true,
         'widgetParent': '#' + id + ' .widget'
-    });
+    };
+    $('#' + id + ' input').datetimepicker(options);
     $('#' + id + ' button').click(function () {
         $('#' + id + ' input').data('DateTimePicker').toggle();
     });
