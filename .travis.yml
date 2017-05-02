@@ -17,5 +17,5 @@ env:
 before_install:
   - npm install -g bower
 
-after_success:
-  - mvn clean deploy --settings travis-maven-settings.xml
+script:
+  - mvn clean test deploy --settings travis-maven-settings.xml
