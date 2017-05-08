@@ -1,4 +1,4 @@
-package net.dontdrinkandroot.extensions.wicket.bootstrap.component.progress.table;
+package net.dontdrinkandroot.extensions.wicket.bootstrap.table;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;

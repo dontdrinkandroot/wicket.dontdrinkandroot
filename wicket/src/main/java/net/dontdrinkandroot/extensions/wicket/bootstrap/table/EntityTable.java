@@ -1,4 +1,4 @@
-package net.dontdrinkandroot.extensions.wicket.bootstrap.component.progress.table;
+package net.dontdrinkandroot.extensions.wicket.bootstrap.table;
 
 import net.dontdrinkandroot.wicket.behavior.CssClassAppender;
 import net.dontdrinkandroot.wicket.bootstrap.css.BootstrapCssClass;
@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class EntityTable<T> extends DataTable<T, SingularAttribute<T, ?>>
 {
-
     public EntityTable(
             String id,
             List<? extends IColumn<T, SingularAttribute<T, ?>>> iColumns,
