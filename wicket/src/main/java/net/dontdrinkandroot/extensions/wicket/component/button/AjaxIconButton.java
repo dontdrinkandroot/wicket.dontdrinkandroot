@@ -10,9 +10,12 @@ import net.dontdrinkandroot.wicket.css.CssClass;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+/**
+ * @param <T> Type of the model object
+ * @author Philip Washington Sorst <philip@sorst.net>
+ */
 public abstract class AjaxIconButton<T> extends AjaxButton<T>
 {
-
     private IModel<CssClass> iconClassModel;
 
     private IModel<String> titleModel;
