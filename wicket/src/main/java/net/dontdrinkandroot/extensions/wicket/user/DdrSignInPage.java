@@ -2,13 +2,14 @@ package net.dontdrinkandroot.extensions.wicket.user;
 
 import net.dontdrinkandroot.extensions.wicket.bootstrap.headeritem.DontdrinkandrootBootstrap33JsHeaderItem;
 import net.dontdrinkandroot.extensions.wicket.bootstrap.headeritem.DontdrinkandrootBootstrapCssHeaderItem;
+import net.dontdrinkandroot.wicket.bootstrap.page.SignInPage;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public abstract class DdrSignInPage extends net.dontdrinkandroot.wicket.extras.page.SignInPage
+public abstract class DdrSignInPage extends SignInPage
 {
     public DdrSignInPage(PageParameters parameters)
     {

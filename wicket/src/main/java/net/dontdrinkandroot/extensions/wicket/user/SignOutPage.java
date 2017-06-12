@@ -8,7 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class SignOutPage extends net.dontdrinkandroot.wicket.extras.page.SignOutPage
+public class SignOutPage extends net.dontdrinkandroot.wicket.bootstrap.page.SignOutPage
 {
     public SignOutPage()
     {
