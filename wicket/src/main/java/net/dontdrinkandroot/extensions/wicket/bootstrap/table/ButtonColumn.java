@@ -1,6 +1,6 @@
 package net.dontdrinkandroot.extensions.wicket.bootstrap.table;
 
-import net.dontdrinkandroot.wicket.bootstrap.component.button.ButtonGroup;
+import net.dontdrinkandroot.wicket.bootstrap.component.button.RepeatingButtonGroup;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.repeater.Item;
@@ -20,7 +20,7 @@ public abstract class ButtonColumn<T, S> extends AbstractColumn<T, S>
     @Override
     public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel)
     {
-        cellItem.add(new ButtonGroup<T>(componentId, rowModel)
+        cellItem.add(new RepeatingButtonGroup<T>(componentId, rowModel)
         {
             @Override
             protected void populateButtons(RepeatingView buttonView)
