@@ -1,7 +1,7 @@
 package net.dontdrinkandroot.extensions.wicket.component.calendar;
 
 import net.dontdrinkandroot.wicket.behavior.CssClassAppender;
-import net.dontdrinkandroot.wicket.css.SimpleCssClass;
+import net.dontdrinkandroot.wicket.css.StringCssClass;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -145,10 +145,10 @@ public class DaySelectionTable extends GenericPanel<Integer>
         cellContainer.add(new CssClassAppender("day"));
         if (currentMonth == this.monthModel.getObject().intValue()) {
             if ((null != this.getModelObject()) && (currentDay == this.getModelObject().intValue())) {
-                cellContainer.add(new CssClassAppender(new SimpleCssClass("active")));
+                cellContainer.add(new CssClassAppender(new StringCssClass("active")));
             }
         } else {
-            cellContainer.add(new CssClassAppender(new SimpleCssClass("disabled")));
+            cellContainer.add(new CssClassAppender(new StringCssClass("disabled")));
         }
     }
 
