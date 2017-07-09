@@ -1,6 +1,6 @@
 package net.dontdrinkandroot.extensions.wicket.component.button;
 
-import net.dontdrinkandroot.wicket.extras.choicerenderer.ShortMonthChoiceRenderer;
+import net.dontdrinkandroot.extensions.wicket.choicerenderer.ShortMonthChoiceRenderer;
 import net.dontdrinkandroot.wicket.model.IntegerRangeListModel;
 import org.apache.wicket.model.IModel;
 
