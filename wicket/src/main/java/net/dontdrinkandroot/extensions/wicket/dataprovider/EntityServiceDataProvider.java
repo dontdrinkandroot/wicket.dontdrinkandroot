@@ -1,22 +1,24 @@
 package net.dontdrinkandroot.extensions.wicket.dataprovider;
 
+import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
+import net.dontdrinkandroot.extensions.springdatajpa.service.EntityService;
 import net.dontdrinkandroot.extensions.wicket.model.EntityLoadableDetachableModel;
-import net.dontdrinkandroot.persistence.entity.Entity;
-import net.dontdrinkandroot.persistence.service.EntityService;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataProvider<T>
+public class EntityServiceDataProvider<T extends Entity<ID>, ID extends Serializable> implements IDataProvider<T>
 {
-    private final EntityService<T, K> service;
+    private final EntityService<T, ID> service;
+
     private Class<T> entityClass;
 
-    public EntityServiceDataProvider(EntityService<T, K> service, Class<T> entityClass)
+    public EntityServiceDataProvider(EntityService<T, ID> service, Class<T> entityClass)
     {
         this.service = service;
         this.entityClass = entityClass;
@@ -25,7 +27,7 @@ public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataP
     @Override
     public Iterator<? extends T> iterator(long first, long count)
     {
-        return this.service.listAll(first, count).iterator();
+        return this.service.iterate(first, count);
     }
 
     @Override
@@ -36,7 +38,7 @@ public class EntityServiceDataProvider<T extends Entity<K>, K> implements IDataP
 
     public IModel<T> model(T object)
     {
-        return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
+        return new EntityLoadableDetachableModel<>(object);
     }
 
     @Override

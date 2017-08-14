@@ -1,26 +1,28 @@
 package net.dontdrinkandroot.extensions.wicket.dataprovider;
 
+import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
+import net.dontdrinkandroot.extensions.springdatajpa.service.EntityService;
 import net.dontdrinkandroot.extensions.wicket.model.EntityLoadableDetachableModel;
-import net.dontdrinkandroot.persistence.entity.Entity;
-import net.dontdrinkandroot.persistence.service.EntityService;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 
 import javax.persistence.metamodel.SingularAttribute;
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class SortableEntityServiceDataProvider<T extends Entity<K>, K> extends SortableDataProvider<T, SingularAttribute<T, ?>>
+public class SortableEntityServiceDataProvider<T extends Entity<ID>, ID extends Serializable> extends SortableDataProvider<T, SingularAttribute<T, ?>>
 {
-    private final EntityService<T, K> service;
+    private final EntityService<T, ID> service;
 
     private final Class<T> entityClass;
 
-    public SortableEntityServiceDataProvider(EntityService<T, K> service, Class<T> clazz)
+    public SortableEntityServiceDataProvider(EntityService<T, ID> service, Class<T> clazz)
     {
         this.service = service;
         this.entityClass = clazz;
@@ -32,11 +34,14 @@ public class SortableEntityServiceDataProvider<T extends Entity<K>, K> extends S
         SortParam<SingularAttribute<T, ?>> sort = this.getSort();
         if (null != sort) {
             SingularAttribute<T, ?> sortAttribute = sort.getProperty();
-            ISortState<SingularAttribute<T, ?>> sortState = this.getSortState();
-            return this.service.listAll(first, count, sortAttribute, sort.isAscending()).iterator();
+            return this.service.iterate(
+                    first,
+                    count,
+                    new JpaSort(sort.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sortAttribute)
+            );
         }
 
-        return this.service.listAll(first, count).iterator();
+        return this.service.iterate(first, count);
     }
 
     @Override
@@ -48,7 +53,7 @@ public class SortableEntityServiceDataProvider<T extends Entity<K>, K> extends S
     @Override
     public IModel<T> model(T object)
     {
-        return new EntityLoadableDetachableModel<T, K>(object, this.entityClass);
+        return new EntityLoadableDetachableModel<>(object);
     }
 
     @Override

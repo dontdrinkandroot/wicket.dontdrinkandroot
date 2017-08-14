@@ -7,11 +7,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>extensions</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>wicket</module>
+        <module>spring-data-jpa</module>
     </modules>
 
     <developers>
@@ -47,12 +48,13 @@
     </scm>
 
     <properties>
-        <version.net.dontdrinkandroot.utils.progressmonitor>0.1.0</version.net.dontdrinkandroot.utils.progressmonitor>
-        <version.net.dontdrinkandroot.wicket>0.5.0-SNAPSHOT</version.net.dontdrinkandroot.wicket>
-        <version.net.dontdrinkandroot.utils>0.3.0-SNAPSHOT</version.net.dontdrinkandroot.utils>
-        <version.net.dontdrinkandroot.persistence.jpa>0.3.0-SNAPSHOT</version.net.dontdrinkandroot.persistence.jpa>
-        <version.org.apache.wicket>7.8.0</version.org.apache.wicket>
-        <version.org.codehaus.mojo.exec-maven-plugin>1.5.0</version.org.codehaus.mojo.exec-maven-plugin>
+        <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
+        <net.dontdrinkandroot.utils.progressmonitor.version>0.1.0</net.dontdrinkandroot.utils.progressmonitor.version>
+        <net.dontdrinkandroot.wicket.version>0.5.0-SNAPSHOT</net.dontdrinkandroot.wicket.version>
+        <net.dontdrinkandroot.utils.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.utils.version>
+        <net.dontdrinkandroot.persistence.jpa.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.persistence.jpa.version>
+        <org.apache.wicket.version>7.8.0</org.apache.wicket.version>
+        <org.codehaus.mojo.exec-maven-plugin.version>1.5.0</org.codehaus.mojo.exec-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -61,43 +63,49 @@
             <dependency>
                 <groupId>net.dontdrinkandroot</groupId>
                 <artifactId>utils</artifactId>
-                <version>${version.net.dontdrinkandroot.utils}</version>
+                <version>${net.dontdrinkandroot.utils.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.dontdrinkandroot</groupId>
                 <artifactId>utils.progressmonitor</artifactId>
-                <version>${version.net.dontdrinkandroot.utils.progressmonitor}</version>
+                <version>${net.dontdrinkandroot.utils.progressmonitor.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-spring</artifactId>
-                <version>${version.org.apache.wicket}</version>
+                <version>${org.apache.wicket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-auth-roles</artifactId>
-                <version>${version.org.apache.wicket}</version>
+                <version>${org.apache.wicket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-extensions</artifactId>
-                <version>${version.org.apache.wicket}</version>
+                <version>${org.apache.wicket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.dontdrinkandroot</groupId>
                 <artifactId>wicket.extras</artifactId>
-                <version>${version.net.dontdrinkandroot.wicket}</version>
+                <version>${net.dontdrinkandroot.wicket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.dontdrinkandroot</groupId>
                 <artifactId>persistence.jpa</artifactId>
-                <version>${version.net.dontdrinkandroot.persistence.jpa}</version>
+                <version>${net.dontdrinkandroot.persistence.jpa.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data-jpa.version}</version>
             </dependency>
 
             <dependency>

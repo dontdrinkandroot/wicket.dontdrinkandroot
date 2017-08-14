@@ -1,6 +1,6 @@
 package net.dontdrinkandroot.extensions.wicket.choicerenderer;
 
-import net.dontdrinkandroot.persistence.entity.Entity;
+import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
 import net.dontdrinkandroot.utils.lang.StringUtils;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;

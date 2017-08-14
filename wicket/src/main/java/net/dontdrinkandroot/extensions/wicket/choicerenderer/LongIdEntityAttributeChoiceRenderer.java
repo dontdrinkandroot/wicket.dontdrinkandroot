@@ -1,6 +1,6 @@
 package net.dontdrinkandroot.extensions.wicket.choicerenderer;
 
-import net.dontdrinkandroot.persistence.entity.Entity;
+import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
 import org.apache.wicket.core.util.lang.PropertyResolver;
 
 import javax.persistence.metamodel.Attribute;
@@ -20,6 +20,6 @@ public class LongIdEntityAttributeChoiceRenderer<T extends Entity<Long>> extends
     @Override
     public Object getDisplayValue(T object)
     {
-        return PropertyResolver.getValue(attribute.getName(), object);
+        return PropertyResolver.getValue(this.attribute.getName(), object);
     }
 }
