@@ -1,11 +1,13 @@
 package net.dontdrinkandroot.extensions.springdatajpa.model;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
+@MappedSuperclass
 public class DefaultUuidEntity extends DefaultEntity implements UuidEntity<Long>
 {
     @Column(length = 36, nullable = false, unique = true)
