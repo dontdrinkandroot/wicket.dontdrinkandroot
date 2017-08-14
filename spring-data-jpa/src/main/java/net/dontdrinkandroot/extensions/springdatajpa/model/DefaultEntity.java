@@ -18,7 +18,7 @@ public class DefaultEntity implements Entity<Long>
     @Override
     public Long getId()
     {
-        return null;
+        return this.id;
     }
 
     @Override
