@@ -12,7 +12,11 @@ import java.util.List;
  */
 public interface EntityService<T extends Entity<ID>, ID extends Serializable>
 {
+    T save(T entity);
+
     T find(ID id);
+
+    void delete(T entity);
 
     List<T> listAll();
 
