@@ -9,11 +9,12 @@ public enum DontdrinkandrootCssClass implements CssClass
     MARGIN_TOP_NONE("margin-top-none"),
     MARGIN_BOTTOM_NONE("margin-bottom-none"),
     PADDING_TOP_NONE("padding-top-none"),
-    PADDING_BOTTOM_NONE("padding-bottom-none");
+    PADDING_BOTTOM_NONE("padding-bottom-none"),
+    FLASH_MESSAGES("flash-messages");
 
     private String msgKey;
 
-    private DontdrinkandrootCssClass(String msgKey)
+    DontdrinkandrootCssClass(String msgKey)
     {
         this.msgKey = msgKey;
     }
