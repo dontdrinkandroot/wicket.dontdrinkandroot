@@ -21,6 +21,11 @@ public class DefaultEntity implements Entity<Long>
         return this.id;
     }
 
+    public boolean isPersisted()
+    {
+        return null != this.id;
+    }
+
     @Override
     public boolean equals(Object o)
     {
