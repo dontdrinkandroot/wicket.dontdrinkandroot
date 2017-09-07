@@ -1,9 +1,9 @@
 package net.dontdrinkandroot.extensions.wicket.validator;
 
-import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidator;
+import net.dontdrinkandroot.wicket.component.form.LocalDateTimeTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.validation.ValidationError;
 
 import java.time.LocalDateTime;
@@ -11,23 +11,31 @@ import java.time.LocalDateTime;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class EndTimeAfterStartTimeValidator extends Behavior implements IValidator<LocalDateTime>
+public class EndTimeAfterStartTimeValidator extends AbstractFormValidator
 {
-    private IModel<LocalDateTime> startTimeModel;
+    private final LocalDateTimeTextField startTimeField;
 
-    public EndTimeAfterStartTimeValidator(IModel<LocalDateTime> startTimeModel)
+    private final LocalDateTimeTextField endTimeField;
+
+    public EndTimeAfterStartTimeValidator(LocalDateTimeTextField startTimeField, LocalDateTimeTextField endTimeField)
     {
-        this.startTimeModel = startTimeModel;
+        this.startTimeField = startTimeField;
+        this.endTimeField = endTimeField;
     }
 
     @Override
-    public void validate(IValidatable<LocalDateTime> validatable)
+    public FormComponent<?>[] getDependentFormComponents()
     {
-        LocalDateTime startTime = this.startTimeModel.getObject();
-        LocalDateTime endTime = validatable.getValue();
+        return new LocalDateTimeTextField[]{this.startTimeField, this.endTimeField};
+    }
 
-        if (null != startTime && null != endTime && !endTime.isAfter(startTime)) {
-            validatable.error(new ValidationError().addKey("ddr.validation.end_time_before_start_time"));
+    @Override
+    public void validate(Form<?> form)
+    {
+        LocalDateTime startDate = this.startTimeField.getConvertedInput();
+        LocalDateTime endDate = this.endTimeField.getConvertedInput();
+        if (null != startDate && null != endDate && endDate.isBefore(startDate)) {
+            this.endTimeField.error(new ValidationError().addKey("ddr.validation.end_time_before_start_time"));
         }
     }
 }
