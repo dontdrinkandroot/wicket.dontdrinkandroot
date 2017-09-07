@@ -5,6 +5,7 @@ import net.dontdrinkandroot.extensions.springdatajpa.service.EntityLoader;
 import net.dontdrinkandroot.wicket.model.AbstractInjectedLoadableDetachableModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Args;
 
 import java.io.Serializable;
 
@@ -13,12 +14,12 @@ import java.io.Serializable;
  */
 public class EntityLoadableDetachableModel<T extends Entity<ID>, ID extends Serializable> extends AbstractInjectedLoadableDetachableModel<T>
 {
+    @SpringBean
+    private EntityLoader entityLoader;
+
     private ID id;
 
     private Class<T> clazz;
-
-    @SpringBean
-    private EntityLoader entityLoader;
 
     public EntityLoadableDetachableModel(IModel<? extends T> model)
     {
@@ -29,6 +30,7 @@ public class EntityLoadableDetachableModel<T extends Entity<ID>, ID extends Seri
     {
         super(object);
 
+        Args.notNull(object, "Object must not be null");
         this.id = object.getId();
         this.clazz = (Class<T>) object.getClass();
     }
