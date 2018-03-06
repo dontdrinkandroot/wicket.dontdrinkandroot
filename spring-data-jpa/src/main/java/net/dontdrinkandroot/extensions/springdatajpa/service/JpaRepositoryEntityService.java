@@ -1,11 +1,14 @@
 package net.dontdrinkandroot.extensions.springdatajpa.service;
 
 import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
+import net.dontdrinkandroot.extensions.springdatajpa.repository.AttributeSpecifications;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.List;
  * @author Philip Washington Sorst <philip@sorst.net>
  */
 @Transactional(readOnly = true)
-public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Serializable, R extends JpaRepository<T, ID>> implements EntityService<T, ID>
+public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Serializable, R extends JpaRepository<T, ID> & JpaSpecificationExecutor<T>> implements EntityService<T, ID>
 {
     private R repository;
 
@@ -67,9 +70,29 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     @Override
     public Iterator<T> iterate(long first, long count, Sort sort)
     {
-        int page = Math.toIntExact(first) / Math.toIntExact(count);
-        PageRequest pageRequest = new PageRequest(page, Math.toIntExact(count), sort);
+        PageRequest pageRequest = this.getPageRequest(first, count, sort);
         return this.getRepository().findAll(pageRequest).iterator();
+    }
+
+    @Override
+    public <V> long findCountBy(SingularAttribute<T, V> attribute, V value)
+    {
+        return this.getRepository().count(AttributeSpecifications.byAttribute(attribute, value));
+    }
+
+    @Override
+    public <V> Iterator<T> iterateBy(SingularAttribute<T, V> attribute, V value, long first, long count)
+    {
+        return this.iterateBy(attribute, value, first, count, this.getDefaultSort());
+    }
+
+    @Override
+    public <V> Iterator<T> iterateBy(SingularAttribute<T, V> attribute, V value, long first, long count, Sort sort)
+    {
+        PageRequest pageRequest = this.getPageRequest(first, count, sort);
+        return this.getRepository()
+                .findAll(AttributeSpecifications.byAttribute(attribute, value), pageRequest)
+                .iterator();
     }
 
     @Override
@@ -82,5 +105,11 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     protected Sort getDefaultSort()
     {
         return null;
+    }
+
+    private PageRequest getPageRequest(long first, long count, Sort sort)
+    {
+        int page = Math.toIntExact(first) / Math.toIntExact(count);
+        return new PageRequest(page, Math.toIntExact(count), sort);
     }
 }
