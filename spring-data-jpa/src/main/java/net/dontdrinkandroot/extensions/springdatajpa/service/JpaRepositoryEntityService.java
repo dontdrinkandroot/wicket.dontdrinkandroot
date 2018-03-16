@@ -1,7 +1,7 @@
 package net.dontdrinkandroot.extensions.springdatajpa.service;
 
 import net.dontdrinkandroot.extensions.springdatajpa.model.Entity;
-import net.dontdrinkandroot.extensions.springdatajpa.repository.AttributeSpecifications;
+import net.dontdrinkandroot.extensions.springdatajpa.repository.GenericSpecifications;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -77,7 +77,7 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     @Override
     public <V> long findCountBy(SingularAttribute<T, V> attribute, V value)
     {
-        return this.getRepository().count(AttributeSpecifications.byAttribute(attribute, value));
+        return this.getRepository().count(GenericSpecifications.byAttribute(attribute, value));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     {
         PageRequest pageRequest = this.getPageRequest(first, count, sort);
         return this.getRepository()
-                .findAll(AttributeSpecifications.byAttribute(attribute, value), pageRequest)
+                .findAll(GenericSpecifications.byAttribute(attribute, value), pageRequest)
                 .iterator();
     }
 
