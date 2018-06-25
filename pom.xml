@@ -48,12 +48,12 @@
     </scm>
 
     <properties>
-        <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>2.0.8.RELEASE</spring-data-jpa.version>
         <net.dontdrinkandroot.utils.progressmonitor.version>0.1.0</net.dontdrinkandroot.utils.progressmonitor.version>
-        <net.dontdrinkandroot.wicket.version>0.5.2</net.dontdrinkandroot.wicket.version>
+        <net.dontdrinkandroot.wicket.version>0.6.0-SNAPSHOT</net.dontdrinkandroot.wicket.version>
         <net.dontdrinkandroot.utils.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.utils.version>
         <net.dontdrinkandroot.persistence.jpa.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.persistence.jpa.version>
-        <org.apache.wicket.version>7.9.0</org.apache.wicket.version>
+        <org.apache.wicket.version>8.0.0</org.apache.wicket.version>
         <org.codehaus.mojo.exec-maven-plugin.version>1.5.0</org.codehaus.mojo.exec-maven-plugin.version>
     </properties>
 

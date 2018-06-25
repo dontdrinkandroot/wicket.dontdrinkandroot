@@ -17,10 +17,12 @@
  */
 package net.dontdrinkandroot.extensions.wicket.headeritem;
 
-import org.apache.wicket.ajax.WicketEventJQueryResourceReference;
+import org.apache.wicket.Application;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.resource.JQueryResourceReference;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +37,13 @@ public class ExternalJQueryUiJsHeaderItem extends JavaScriptUrlReferenceHeaderIt
     @Override
     public List<HeaderItem> getDependencies()
     {
-        final HeaderItem jQuery = JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get());
+        final ResourceReference backingLibraryReference;
+        if (Application.exists()) {
+            backingLibraryReference = Application.get().getJavaScriptLibrarySettings().getJQueryReference();
+        } else {
+            backingLibraryReference = JQueryResourceReference.getV3();
+        }
 
-        return Collections.singletonList(jQuery);
+        return Collections.singletonList(JavaScriptHeaderItem.forReference(backingLibraryReference));
     }
 }

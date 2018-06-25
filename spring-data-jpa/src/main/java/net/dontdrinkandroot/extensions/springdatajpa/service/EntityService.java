@@ -7,6 +7,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
@@ -15,7 +16,7 @@ public interface EntityService<T extends Entity<ID>, ID extends Serializable>
 {
     T save(T entity);
 
-    T find(ID id);
+    Optional<T> find(ID id);
 
     void delete(T entity);
 

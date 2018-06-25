@@ -12,6 +12,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
@@ -44,9 +45,9 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     }
 
     @Override
-    public T find(ID id)
+    public Optional<T> find(ID id)
     {
-        return this.getRepository().findOne(id);
+        return this.getRepository().findById(id);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
 
     protected Sort getDefaultSort()
     {
-        return null;
+        return Sort.unsorted();
     }
 
     private PageRequest getPageRequest(long first, long count, Sort sort)
