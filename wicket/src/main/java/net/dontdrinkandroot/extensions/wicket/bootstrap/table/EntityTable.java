@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class EntityTable<T> extends DataTable<T, SingularAttribute<T, ?>>
+public class EntityTable<T> extends DataTable<T, SingularAttribute<? super T, ?>>
 {
     public EntityTable(
             String id,
-            List<? extends IColumn<T, SingularAttribute<T, ?>>> columns,
-            ISortableDataProvider<T, SingularAttribute<T, ?>> dataProvider
+            List<? extends IColumn<T, SingularAttribute<? super T, ?>>> columns,
+            ISortableDataProvider<T, SingularAttribute<? super T, ?>> dataProvider
     )
     {
         super(id, columns, dataProvider, 10);

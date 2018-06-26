@@ -16,7 +16,7 @@ import java.util.Iterator;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class SortableEntityServiceDataProvider<T extends Entity<ID>, ID extends Serializable> extends SortableDataProvider<T, SingularAttribute<T, ?>>
+public class SortableEntityServiceDataProvider<T extends Entity<ID>, ID extends Serializable> extends SortableDataProvider<T, SingularAttribute<? super T, ?>>
 {
     private final EntityService<T, ID> service;
 
@@ -31,9 +31,9 @@ public class SortableEntityServiceDataProvider<T extends Entity<ID>, ID extends 
     @Override
     public Iterator<? extends T> iterator(long first, long count)
     {
-        SortParam<SingularAttribute<T, ?>> sort = this.getSort();
+        SortParam<SingularAttribute<? super T, ?>> sort = this.getSort();
         if (null != sort) {
-            SingularAttribute<T, ?> sortAttribute = sort.getProperty();
+            SingularAttribute<? super T, ?> sortAttribute = sort.getProperty();
             return this.service.iterate(
                     first,
                     count,

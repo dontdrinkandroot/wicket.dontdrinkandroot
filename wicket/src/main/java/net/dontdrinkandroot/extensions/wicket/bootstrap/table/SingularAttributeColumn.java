@@ -13,9 +13,9 @@ import javax.persistence.metamodel.SingularAttribute;
 /**
  * @author Philip Washington Sorst <philip@sorst.net>
  */
-public class SingularAttributeColumn<T> extends AbstractColumn<T, SingularAttribute<T, ?>> implements IExportableColumn<T, SingularAttribute<T, ?>>
+public class SingularAttributeColumn<T> extends AbstractColumn<T, SingularAttribute<? super T, ?>> implements IExportableColumn<T, SingularAttribute<? super T, ?>>
 {
-    public SingularAttributeColumn(IModel<String> displayModel, SingularAttribute<T, ?> sortProperty)
+    public SingularAttributeColumn(IModel<String> displayModel, SingularAttribute<? super T, ?> sortProperty)
     {
         super(displayModel, sortProperty);
     }

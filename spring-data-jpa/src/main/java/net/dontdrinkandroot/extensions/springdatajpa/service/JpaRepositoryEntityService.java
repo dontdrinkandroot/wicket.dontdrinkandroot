@@ -111,6 +111,6 @@ public class JpaRepositoryEntityService<T extends Entity<ID>, ID extends Seriali
     private PageRequest getPageRequest(long first, long count, Sort sort)
     {
         int page = Math.toIntExact(first) / Math.toIntExact(count);
-        return new PageRequest(page, Math.toIntExact(count), sort);
+        return PageRequest.of(page, Math.toIntExact(count), sort);
     }
 }
