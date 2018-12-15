@@ -48,13 +48,16 @@
     </scm>
 
     <properties>
-        <spring-data-jpa.version>2.0.8.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>[2.0,2.999]</spring-data-jpa.version>
         <net.dontdrinkandroot.utils.progressmonitor.version>0.1.0</net.dontdrinkandroot.utils.progressmonitor.version>
         <net.dontdrinkandroot.wicket.version>0.6.0-SNAPSHOT</net.dontdrinkandroot.wicket.version>
         <net.dontdrinkandroot.utils.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.utils.version>
         <net.dontdrinkandroot.persistence.jpa.version>0.3.0-SNAPSHOT</net.dontdrinkandroot.persistence.jpa.version>
-        <org.apache.wicket.version>8.0.0</org.apache.wicket.version>
+        <org.apache.wicket.version>[8.0,9.999]</org.apache.wicket.version>
         <org.codehaus.mojo.exec-maven-plugin.version>1.5.0</org.codehaus.mojo.exec-maven-plugin.version>
+        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+        <metagen.model.version>0.0.1-SNAPSHOT</metagen.model.version>
+        <hibernate-jpa-2.1-api.artifactId>hibernate-jpa-2.1-api</hibernate-jpa-2.1-api.artifactId>
     </properties>
 
     <dependencyManagement>
@@ -111,7 +114,7 @@
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>1.0.0.Final</version>
+                <version>${hibernate-jpa-2.1-api.version}</version>
                 <scope>provided</scope>
             </dependency>
 
